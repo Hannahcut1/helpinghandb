@@ -1,11 +1,11 @@
 {
-    "name": "laravel/breeze",
-    "description": "Minimal Laravel authentication scaffolding with Blade and Tailwind.",
-    "keywords": ["laravel", "auth"],
+    "name": "illuminate/contracts",
+    "description": "The Illuminate Contracts package.",
     "license": "MIT",
+    "homepage": "https://laravel.com",
     "support": {
-        "issues": "https://github.com/laravel/breeze/issues",
-        "source": "https://github.com/laravel/breeze"
+        "issues": "https://github.com/laravel/framework/issues",
+        "source": "https://github.com/laravel/framework"
     },
     "authors": [
         {
@@ -14,33 +14,22 @@
         }
     ],
     "require": {
-        "php": "^8.2.0",
-        "illuminate/console": "^11.0|^12.0",
-        "illuminate/filesystem": "^11.0|^12.0",
-        "illuminate/support": "^11.0|^12.0",
-        "illuminate/validation": "^11.0|^12.0",
-        "symfony/console": "^7.0"
-    },
-    "require-dev": {
-        "laravel/framework": "^11.0|^12.0",
-        "orchestra/testbench-core": "^9.0|^10.0",
-        "phpstan/phpstan": "^2.0"
+        "php": "^8.2",
+        "psr/container": "^1.1.1|^2.0.1",
+        "psr/simple-cache": "^1.0|^2.0|^3.0"
     },
     "autoload": {
         "psr-4": {
-            "Laravel\\Breeze\\": "src/"
+            "Illuminate\\Contracts\\": ""
         }
     },
     "extra": {
-        "laravel": {
-            "providers": [
-                "Laravel\\Breeze\\BreezeServiceProvider"
-            ]
+        "branch-alias": {
+            "dev-master": "12.x-dev"
         }
     },
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "minimum-stability": "dev"
 }
