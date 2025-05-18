@@ -1,419 +1,746 @@
-# Release Notes for 12.x
+# Change Log
+All notable changes to this project will be documented in this file.
+Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [Unreleased](https://github.com/laravel/framework/compare/v12.12.0...12.x)
+**Upgrading from 1.x?** See <https://commonmark.thephpleague.com/2.0/upgrading/> for additional information.
 
-## [v12.12.0](https://github.com/laravel/framework/compare/v12.11.1...v12.12.0) - 2025-05-01
+## [Unreleased][unreleased]
 
-* [12.x] Make Blueprint Resolver Statically by [@finagin](https://github.com/finagin) in https://github.com/laravel/framework/pull/55607
-* [12.x] Allow limiting number of assets to preload by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/framework/pull/55618
-* [12.x] Set job instance on "failed" command instance by [@willrowe](https://github.com/willrowe) in https://github.com/laravel/framework/pull/55617
+## [2.7.0]
 
-## [v12.11.1](https://github.com/laravel/framework/compare/v12.11.0...v12.11.1) - 2025-04-30
+This is a **security release** to address a potential cross-site scripting (XSS) vulnerability when using the `AttributesExtension` with untrusted user input.
 
-* Revert "[12.x]`ScheduledTaskFailed` not dispatched on scheduled task failing" by [@taylorotwell](https://github.com/taylorotwell) in https://github.com/laravel/framework/pull/55612
-* [12.x] Resolve issue with BelongsToManyRelationship factory by [@jackbayliss](https://github.com/jackbayliss) in https://github.com/laravel/framework/pull/55608
+### Added
+- Added `attributes/allow` config option to specify which attributes users are allowed to set on elements (default allows virtually all attributes)
 
-## [v12.11.0](https://github.com/laravel/framework/compare/v12.10.2...v12.11.0) - 2025-04-29
+### Changed
+- The `AttributesExtension` blocks all attributes starting with `on` unless explicitly allowed via the `attributes/allow` config option
+- The `allow_unsafe_links` option is now respected by the `AttributesExtension` when users specify `href` and `src` attributes
 
-* Add payload creation and original delay info to job payload by [@taylorotwell](https://github.com/taylorotwell) in https://github.com/laravel/framework/pull/55529
-* Add config option to ignore view cache timestamps by [@pizkaz](https://github.com/pizkaz) in https://github.com/laravel/framework/pull/55536
-* [12.x] Dispatch NotificationFailed when sending fails by [@rodrigopedra](https://github.com/rodrigopedra) in https://github.com/laravel/framework/pull/55507
-* [12.x] Option to disable dispatchAfterResponse in a test by [@gdebrauwer](https://github.com/gdebrauwer) in https://github.com/laravel/framework/pull/55456
-* [12.x] Pass flags to custom Json::$encoder by [@rodrigopedra](https://github.com/rodrigopedra) in https://github.com/laravel/framework/pull/55548
-* [12.x] Use pendingAttributes of relationships when creating relationship models via model factories by [@gdebrauwer](https://github.com/gdebrauwer) in https://github.com/laravel/framework/pull/55558
-* [12.x] Fix double query in model relation serialization by [@AndrewMast](https://github.com/AndrewMast) in https://github.com/laravel/framework/pull/55547
-* [12.x] Improve circular relation check in Automatic Relation Loading by [@litvinchuk](https://github.com/litvinchuk) in https://github.com/laravel/framework/pull/55542
-* [12.x] Prevent relation autoload context from being serialized by [@litvinchuk](https://github.com/litvinchuk) in https://github.com/laravel/framework/pull/55582
-* Remove `@internal` Annotation from `$components` Property in `InteractsWithIO` by [@michaelnabil230](https://github.com/michaelnabil230) in https://github.com/laravel/framework/pull/55580
-* Ensure fake job implements job contract by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/framework/pull/55574
-* [12.x] Fix `AnyOf` constructor parameter type by [@axlon](https://github.com/axlon) in https://github.com/laravel/framework/pull/55577
-* Sync changes to Illuminate components before release by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/framework/pull/55591
-* [12.x] Set class-string generics on `Enum` rule by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55588
-* [12.x] added detailed doc types to bindings related methods by [@taka-oyama](https://github.com/taka-oyama) in https://github.com/laravel/framework/pull/55576
-* [12.x] Improve [@use](https://github.com/use) directive to support function and const modifiers by [@rodolfosrg](https://github.com/rodolfosrg) in https://github.com/laravel/framework/pull/55583
-* 12.x scheduled task failed not dispatched on scheduled task failing by [@achrafAa](https://github.com/achrafAa) in https://github.com/laravel/framework/pull/55572
-* [12.x] Introduce Reflector methods for accessing class attributes by [@daniser](https://github.com/daniser) in https://github.com/laravel/framework/pull/55568
-* [12.x] Typed getters for Arr helper by [@tibbsa](https://github.com/tibbsa) in https://github.com/laravel/framework/pull/55567
+## [2.6.2] - 2025-04-18
 
-## [v12.10.2](https://github.com/laravel/framework/compare/v12.10.1...v12.10.2) - 2025-04-24
+### Fixed
 
-* [12.x] Address Model@relationLoaded when relation is null by [@rodrigopedra](https://github.com/rodrigopedra) in https://github.com/laravel/framework/pull/55531
+- Fixed Attributes extension parsing regression (#1071)
 
-## [v12.10.1](https://github.com/laravel/framework/compare/v12.10.0...v12.10.1) - 2025-04-23
+## [2.6.1] - 2024-12-29
 
-* Revert "Use value() helper in 'when' method to simplify code" #55465 by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/55514
-* [12.x] Use xxh128 when comparing views for changes by [@shawnlindstrom](https://github.com/shawnlindstrom) in https://github.com/laravel/framework/pull/55517
-* [12.x] Ensure related models is iterable on `HasRelationships@relationLoaded()` by [@rodrigopedra](https://github.com/rodrigopedra) in https://github.com/laravel/framework/pull/55519
-* [12.x] Add Enum support for assertJsonPath in AssertableJsonString.php by [@azim-kordpour](https://github.com/azim-kordpour) in https://github.com/laravel/framework/pull/55516
+### Fixed
 
-## [v12.10.0](https://github.com/laravel/framework/compare/v12.9.2...v12.10.0) - 2025-04-22
+- Rendered list items should only add newlines around block-level children (#1059, #1061)
 
-* Use value() helper in 'when' method by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/55465
-* [12.x] Test `@use` directive without quotes by [@osbre](https://github.com/osbre) in https://github.com/laravel/framework/pull/55462
-* [12.x] Enhance Broadcast Events Test Coverage by [@roshandelpoor](https://github.com/roshandelpoor) in https://github.com/laravel/framework/pull/55458
-* [12.x] Add `Conditionable` Trait to `Fluent`  by [@michaelnabil230](https://github.com/michaelnabil230) in https://github.com/laravel/framework/pull/55455
-* [12.x] Fix relation auto loading with manually set relations by [@patrickweh](https://github.com/patrickweh) in https://github.com/laravel/framework/pull/55452
-* Add missing types to RateLimiter by [@ClaudioEyzaguirre](https://github.com/ClaudioEyzaguirre) in https://github.com/laravel/framework/pull/55445
-* [12.x] Fix for global autoload relationships not working  in certain cases by [@litvinchuk](https://github.com/litvinchuk) in https://github.com/laravel/framework/pull/55443
-* [12.x] Fix adding `setTags` method on new cache flush events by [@erikn69](https://github.com/erikn69) in https://github.com/laravel/framework/pull/55405
-* Fix: Unique lock not being released after transaction rollback in ShouldBeUnique jobs with afterCommit() by [@toshitsuna-otsuka](https://github.com/toshitsuna-otsuka) in https://github.com/laravel/framework/pull/55420
-* [12.x] Extends `AsCollection` to map items into objects or other values by [@DarkGhostHunter](https://github.com/DarkGhostHunter) in https://github.com/laravel/framework/pull/55383
-* [12.x] Fix group imports in Blade `@use` directive by [@osbre](https://github.com/osbre) in https://github.com/laravel/framework/pull/55461
-* chore(tests): align test names with idiomatic naming style by [@kauffinger](https://github.com/kauffinger) in https://github.com/laravel/framework/pull/55496
-* Update compiled views only if they actually changed by [@pizkaz](https://github.com/pizkaz) in https://github.com/laravel/framework/pull/55450
-* Improve performance of Arr::dot method - 300x in some cases by [@cyppe](https://github.com/cyppe) in https://github.com/laravel/framework/pull/55495
-* [12.x] Add tests for `CacheBasedSessionHandler` by [@imanghafoori1](https://github.com/imanghafoori1) in https://github.com/laravel/framework/pull/55487
-* [12.x] Add tests for `FileSessionHandler` by [@imanghafoori1](https://github.com/imanghafoori1) in https://github.com/laravel/framework/pull/55484
-* [12.x] Add tests for `DatabaseSessionHandler` by [@imanghafoori1](https://github.com/imanghafoori1) in https://github.com/laravel/framework/pull/55485
-* [12.x] Fix many to many detach without IDs broken with custom pivot class by [@amir9480](https://github.com/amir9480) in https://github.com/laravel/framework/pull/55490
-* [12.x] Support nested relations on `relationLoaded` method by [@tmsperera](https://github.com/tmsperera) in https://github.com/laravel/framework/pull/55471
-* Bugfix for Cache::memo()->many() returning the wrong value with an integer key type by [@bmckay959](https://github.com/bmckay959) in https://github.com/laravel/framework/pull/55503
-* [12.x] Allow Container to build `Migrator` from class name by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55501
+## [2.6.0] - 2024-12-07
 
-## [v12.9.2](https://github.com/laravel/framework/compare/v12.9.1...v12.9.2) - 2025-04-16
+This is a **security release** to address potential denial of service attacks when parsing specially crafted,
+malicious input from untrusted sources (like user input).
 
-* [12.x] Fixed a bug in using `illuminate/console` in external apps by [@andrey-helldar](https://github.com/andrey-helldar) in https://github.com/laravel/framework/pull/55430
-* Disable SQLServer 2017 CI as `ubuntu-20.24` has been removed by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/55425
+### Added
 
-## [v12.9.1](https://github.com/laravel/framework/compare/v12.9.0...v12.9.1) - 2025-04-16
+- Added `max_delimiters_per_line` config option to prevent denial of service attacks when parsing malicious input
+- Added `table/max_autocompleted_cells` config option to prevent denial of service attacks when parsing large tables
+- The `AttributesExtension` now supports attributes without values (#985, #986)
+- The `AutolinkExtension` exposes two new configuration options to override the default behavior (#969, #987):
+    - `autolink/allowed_protocols` - an array of protocols to allow autolinking for
+    - `autolink/default_protocol` - the default protocol to use when none is specified
+- Added `RegexHelper::isWhitespace()` method to check if a given character is an ASCII whitespace character
+- Added `CacheableDelimiterProcessorInterface` to ensure linear complexity for dynamic delimiter processing
+- Added `Bracket` delimiter type to optimize bracket parsing
 
-* [12.x] Forward only passed arguments into Illuminate\Database\Eloquent\Collection::partition method by [@MarekVikartovsky](https://github.com/MarekVikartovsky) in https://github.com/laravel/framework/pull/55422
-* [12.x] Add test for complex context manipulation in Logger by [@roshandelpoor](https://github.com/roshandelpoor) in https://github.com/laravel/framework/pull/55423
-* [12.x] Remove unused var from `DumpCommand` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55431
-* [12.x] Fix the serve command sometimes fails to destructure the request pool array by [@tonysm](https://github.com/tonysm) in https://github.com/laravel/framework/pull/55427
-* [12.x] Changes to `package-lock.json` should trigger `npm run build` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/55426
+### Changed
 
-## [v12.9.0](https://github.com/laravel/framework/compare/v12.8.1...v12.9.0) - 2025-04-15
+- `[` and `]` are no longer added as `Delimiter` objects on the stack; a new `Bracket` type with its own stack is used instead
+- `UrlAutolinkParser` no longer parses URLs with more than 127 subdomains
+- Expanded reference links can no longer exceed 100kb, or the size of the input document (whichever is greater)
+- Delimiters should always provide a non-null value via `DelimiterInterface::getIndex()`
+  - We'll attempt to infer the index based on surrounding delimiters where possible
+- The `DelimiterStack` now accepts integer positions for any `$stackBottom` argument
+- Several small performance optimizations
 
-* Add types to ViewErrorBag by [@AJenbo](https://github.com/AJenbo) in https://github.com/laravel/framework/pull/55329
-* Add types to MessageBag by [@AJenbo](https://github.com/AJenbo) in https://github.com/laravel/framework/pull/55327
-* [12.x] add generics to commonly used methods in Schema/Builder by [@taka-oyama](https://github.com/taka-oyama) in https://github.com/laravel/framework/pull/55330
-* Return frozen time for easier testing by [@jasonmccreary](https://github.com/jasonmccreary) in https://github.com/laravel/framework/pull/55323
-* Enhance DetectsLostConnections to Support AWS Aurora Credential Rotation Scenario by [@msaifmfz](https://github.com/msaifmfz) in https://github.com/laravel/framework/pull/55331
-* [12.x] Rename test method of failedRequest() by [@LKaemmerling](https://github.com/LKaemmerling) in https://github.com/laravel/framework/pull/55332
-* feat: Add a callback to be called on transaction failure by [@dshafik](https://github.com/dshafik) in https://github.com/laravel/framework/pull/55338
-* [12.x]  Add withRelationshipAutoloading method to model by [@litvinchuk](https://github.com/litvinchuk) in https://github.com/laravel/framework/pull/55344
-* [12.x] Enable HTTP client retries when middleware throws an exception by [@27pchrisl](https://github.com/27pchrisl) in https://github.com/laravel/framework/pull/55343
-* [12.x] Fix Closure serialization error in automatic relation loading by [@litvinchuk](https://github.com/litvinchuk) in https://github.com/laravel/framework/pull/55345
-* Add test for Unique validation rule with WhereIn constraints by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/55351
-* Add [@throws](https://github.com/throws) in doc-blocks by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/55361
-* [12.x] Update `propagateRelationAutoloadCallbackToRelation` method doc-block by [@derian-all-win-software](https://github.com/derian-all-win-software) in https://github.com/laravel/framework/pull/55363
-* [12.x]  - Redis - Establish connection first, before set the options by [@alexmontoanelli](https://github.com/alexmontoanelli) in https://github.com/laravel/framework/pull/55370
-* [12.x] Fix translation FileLoader overrides with a missing key by [@fabio-ivona](https://github.com/fabio-ivona) in https://github.com/laravel/framework/pull/55342
-* [12.x] Fix pivot model events not working when using the `withPivotValue` by [@amir9480](https://github.com/amir9480) in https://github.com/laravel/framework/pull/55280
-* [12.x] Introduce memoized cache driver by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/framework/pull/55304
-* [12.x] Add test for Filesystem::lastModified() method by [@roshandelpoor](https://github.com/roshandelpoor) in https://github.com/laravel/framework/pull/55389
-* [12.x] Supports `pda/pheanstalk` 7 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/55397
-* [12.x] Add comprehensive filesystem operation tests to FilesystemTest by [@roshandelpoor](https://github.com/roshandelpoor) in https://github.com/laravel/framework/pull/55399
-* Bump vite from 5.4.17 to 5.4.18 in /src/Illuminate/Foundation/resources/exceptions/renderer by [@dependabot](https://github.com/dependabot) in https://github.com/laravel/framework/pull/55402
-* Add descriptive error messages to assertViewHas() by [@3Descape](https://github.com/3Descape) in https://github.com/laravel/framework/pull/55392
-* Use Generic Types Annotations for LazyCollection Methods by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/55380
-* [12.x] Add test coverage for Process sequence with multiple env variables by [@roshandelpoor](https://github.com/roshandelpoor) in https://github.com/laravel/framework/pull/55406
-* [12.x] Fix cc/bcc/replyTo address merging in `MailMessage` by [@onlime](https://github.com/onlime) in https://github.com/laravel/framework/pull/55404
-* [12.x] Add a `make` function in the `Fluent` by [@michaelnabil230](https://github.com/michaelnabil230) in https://github.com/laravel/framework/pull/55417
+## [2.5.3] - 2024-08-16
 
-## [v12.8.1](https://github.com/laravel/framework/compare/v12.8.0...v12.8.1) - 2025-04-08
+### Changed
 
-## [v12.8.0](https://github.com/laravel/framework/compare/v12.7.2...v12.8.0) - 2025-04-08
+- Made compatible with CommonMark spec 0.31.1, including:
+  - Remove `source`, add `search` to list of recognized block tags
 
-* [12.x] only check for soft deletes once when mass-pruning by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55274
-* [12.x] Add createMany mass-assignment variants to `HasOneOrMany` relation by [@onlime](https://github.com/onlime) in https://github.com/laravel/framework/pull/55262
-* cosmetic: include is_array() case in match construct of getArrayableItems by [@epic-64](https://github.com/epic-64) in https://github.com/laravel/framework/pull/55275
-* Add tests for InvokeSerializedClosureCommand by [@Amirhf1](https://github.com/Amirhf1) in https://github.com/laravel/framework/pull/55281
-* [12.x] Temporarily prevents PHPUnit 12.1 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/55297
-* [12.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/55306
-* Bump vite from 5.4.12 to 5.4.17 in /src/Illuminate/Foundation/resources/exceptions/renderer by [@dependabot](https://github.com/dependabot) in https://github.com/laravel/framework/pull/55301
-* [12.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/55307
-* [12.x] add generics to array types for Schema Grammars by [@taka-oyama](https://github.com/taka-oyama) in https://github.com/laravel/framework/pull/55314
-* [12.x] fix missing nullable for Query/Grammar::compileInsertGetId by [@taka-oyama](https://github.com/taka-oyama) in https://github.com/laravel/framework/pull/55311
-* [12.x] Adds `fromJson()` to Collection by [@DarkGhostHunter](https://github.com/DarkGhostHunter) in https://github.com/laravel/framework/pull/55310
-* [12.x] Fix `illuminate/database` usage as standalone package by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/55309
-* Correct array key in InteractsWithInput by [@AJenbo](https://github.com/AJenbo) in https://github.com/laravel/framework/pull/55287
-* [12.x] Fix support for adding custom observable events from traits by [@willrowe](https://github.com/willrowe) in https://github.com/laravel/framework/pull/55286
-* [12.x] Added Automatic Relation Loading (Eager Loading) Feature by [@litvinchuk](https://github.com/litvinchuk) in https://github.com/laravel/framework/pull/53655
-* [12.x] Modify PHPDoc for Collection::chunkWhile functions to support preserving keys by [@jsvdvis](https://github.com/jsvdvis) in https://github.com/laravel/framework/pull/55324
-* [12.x] Introduce Rule::anyOf() for Validating Against Multiple Rule Sets by [@brianferri](https://github.com/brianferri) in https://github.com/laravel/framework/pull/55191
+## [2.5.2] - 2024-08-14
 
-## [v12.7.2](https://github.com/laravel/framework/compare/v12.7.1...v12.7.2) - 2025-04-03
+### Changed
 
-## [v12.7.1](https://github.com/laravel/framework/compare/v12.7.0...v12.7.1) - 2025-04-03
+- Boolean attributes now require an explicit `true` value (#1040)
 
-## [v12.7.0](https://github.com/laravel/framework/compare/v12.6.0...v12.7.0) - 2025-04-03
+### Fixed
 
-* [12.x] `AbstractPaginator` should implement `CanBeEscapedWhenCastToString` by [@gdebrauwer](https://github.com/gdebrauwer) in https://github.com/laravel/framework/pull/55256
-* [12.x] Add `whereAttachedTo()` Eloquent builder method by [@bakerkretzmar](https://github.com/bakerkretzmar) in https://github.com/laravel/framework/pull/55245
-* Make Illuminate\Support\Uri Macroable by [@riesjart](https://github.com/riesjart) in https://github.com/laravel/framework/pull/55260
-* [12.x] Add resource helper functions to Model/Collections by [@TimKunze96](https://github.com/TimKunze96) in https://github.com/laravel/framework/pull/55107
-* [12.x]: Use char(36) for uuid type on MariaDB < 10.7.0 by [@boedah](https://github.com/boedah) in https://github.com/laravel/framework/pull/55197
-* [12.x] Introducing `toArray` to `ComponentAttributeBag` class by [@devajmeireles](https://github.com/devajmeireles) in https://github.com/laravel/framework/pull/55258
+- Fixed regression where text could be misinterpreted as an attribute (#1040)
 
-## [v12.6.0](https://github.com/laravel/framework/compare/v12.5.0...v12.6.0) - 2025-04-02
+## [2.5.1] - 2024-07-24
 
-* [12.x] Dont stop pruning if pruning one model fails by [@gdebrauwer](https://github.com/gdebrauwer) in https://github.com/laravel/framework/pull/55237
-* [12.x] Update Date Facade Docblocks by [@fdalcin](https://github.com/fdalcin) in https://github.com/laravel/framework/pull/55235
-* Make `db:seed` command prohibitable by [@spawnia](https://github.com/spawnia) in https://github.com/laravel/framework/pull/55238
-* [12.x] Introducing `Rules\Password::appliedRules` Method by [@devajmeireles](https://github.com/devajmeireles) in https://github.com/laravel/framework/pull/55206
-* [12.x] Allowing merging model attributes before insert via `Model::fillAndInsert()` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55038
-* [12.x] Fix type hints for DateTimeZone and DateTimeInterface on DateFactory by [@AndrewMast](https://github.com/AndrewMast) in https://github.com/laravel/framework/pull/55243
-* [12.x] Fix DateFactory docblock type hints by [@AndrewMast](https://github.com/AndrewMast) in https://github.com/laravel/framework/pull/55244
-* List missing `migrate:rollback` in DB::prohibitDestructiveCommands PhpDoc by [@spawnia](https://github.com/spawnia) in https://github.com/laravel/framework/pull/55252
-* [12.x] Add `Http::requestException()` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55241
-* New: Uri `pathSegments()` helper method by [@chester-sykes](https://github.com/chester-sykes) in https://github.com/laravel/framework/pull/55250
-* [12.x] Do not require returning a Builder instance from a local scope method by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55246
+### Fixed
 
-## [v12.5.0](https://github.com/laravel/framework/compare/v12.4.1...v12.5.0) - 2025-04-01
+- Fixed attribute parsing incorrectly parsing mustache-like syntax (#1035)
+- Fixed incorrect `Table` start line numbers (#1037)
 
-* Correct misspellings by [@szepeviktor](https://github.com/szepeviktor) in https://github.com/laravel/framework/pull/55218
-* [12.x] Add ability to flush state on Vite helper by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/framework/pull/55228
-* [12.x] Support taggeable store flushed cache events by [@erikn69](https://github.com/erikn69) in https://github.com/laravel/framework/pull/55223
-* Revert "[12.x] Support taggeable store flushed cache events" by [@taylorotwell](https://github.com/taylorotwell) in https://github.com/laravel/framework/pull/55232
-* [12.x] Allow configuration of retry period for RoundRobin and Failover mail transports by [@jnoordsij](https://github.com/jnoordsij) in https://github.com/laravel/framework/pull/55222
-* [12.x] Add --json option to EventListCommand by [@hotsaucejake](https://github.com/hotsaucejake) in https://github.com/laravel/framework/pull/55207
+## [2.5.0] - 2024-07-22
 
-## [v12.4.1](https://github.com/laravel/framework/compare/v12.4.0...v12.4.1) - 2025-03-30
+### Added
 
-* [12.x] Add `Expression` type to param `$value` of `QueryBuilder` `orHaving()` method by [@faissaloux](https://github.com/faissaloux) in https://github.com/laravel/framework/pull/55202
-* [12.x] Fix URL generation with optional parameters (regression in #54811) by [@stancl](https://github.com/stancl) in https://github.com/laravel/framework/pull/55213
-* [12.x] Fix failing tests on windows OS by [@imanghafoori1](https://github.com/imanghafoori1) in https://github.com/laravel/framework/pull/55210
+- The `AttributesExtension` now supports attributes without values (#985, #986)
+- The `AutolinkExtension` exposes two new configuration options to override the default behavior (#969, #987):
+    - `autolink/allowed_protocols` - an array of protocols to allow autolinking for
+    - `autolink/default_protocol` - the default protocol to use when none is specified
 
-## [v12.4.0](https://github.com/laravel/framework/compare/v12.3.0...v12.4.0) - 2025-03-29
+### Changed
 
-* [12.x] Reset PHP’s peak memory usage when resetting scope for queue worker by [@TimWolla](https://github.com/TimWolla) in https://github.com/laravel/framework/pull/55069
-* [12.x] Add `AsHtmlString` cast by [@ralphjsmit](https://github.com/ralphjsmit) in https://github.com/laravel/framework/pull/55071
-* [12.x] Add `Arr::sole()` method by [@ralphjsmit](https://github.com/ralphjsmit) in https://github.com/laravel/framework/pull/55070
-* Improve warning message in `ApiInstallCommand` by [@sajjadhossainshohag](https://github.com/sajjadhossainshohag) in https://github.com/laravel/framework/pull/55081
-* [12.x] use already determined `related` property by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55075
-* [12.x] use "class-string" where appropriate in relations by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55074
-* [12.x] `QueueFake::listenersPushed()` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55063
-* [12.x] Added except() method to Model class for excluding attributes by [@vishal2931](https://github.com/vishal2931) in https://github.com/laravel/framework/pull/55072
-* [12.x] fix: add TPivotModel default and define pivot property in {Belongs,Morph}ToMany by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/framework/pull/55086
-* [12.x] remove `@return` docblocks on constructors by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55076
-* [12.x] Add NamedScope attribute by [@shaedrich](https://github.com/shaedrich) in https://github.com/laravel/framework/pull/54450
-* [12.x] Improve syntax highlighting for stub type files by [@kayw-geek](https://github.com/kayw-geek) in https://github.com/laravel/framework/pull/55094
-* [12.x] Prefer `new Collection` over `Collection::make` by [@AhmedAlaa4611](https://github.com/AhmedAlaa4611) in https://github.com/laravel/framework/pull/55091
-* [12.x] Fix except() method to support casted values by [@vishal2931](https://github.com/vishal2931) in https://github.com/laravel/framework/pull/55124
-* [12.x] Add testcase for findSole method by [@mrvipchien](https://github.com/mrvipchien) in https://github.com/laravel/framework/pull/55115
-* [12.x] Types: PasswordBroker::reset by [@liamduckett](https://github.com/liamduckett) in https://github.com/laravel/framework/pull/55109
-* [12.x] assertThrowsNothing by [@gdebrauwer](https://github.com/gdebrauwer) in https://github.com/laravel/framework/pull/55100
-* [12.x] Fix type nullability on PasswordBroker.events property by [@jnoordsij](https://github.com/jnoordsij) in https://github.com/laravel/framework/pull/55097
-* [12.x] Fix return type annotation in decrementPendingJobs method by [@shane-zeng](https://github.com/shane-zeng) in https://github.com/laravel/framework/pull/55133
-* [12.x] Fix return type annotation in compile method by [@shane-zeng](https://github.com/shane-zeng) in https://github.com/laravel/framework/pull/55132
-* [12.x] feat: Add `whereNull` and `whereNotNull` to `Assertablejson` by [@faissaloux](https://github.com/faissaloux) in https://github.com/laravel/framework/pull/55131
-* [12.x] fix: use contextual bindings in class dependency resolution by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/framework/pull/55090
-* Better return types for `Illuminate\Queue\Jobs\Job::getJobId()` and `Illuminate\Queue\Jobs\DatabaseJob::getJobId()` methods by [@petrknap](https://github.com/petrknap) in https://github.com/laravel/framework/pull/55138
-* Remove remaining [@return](https://github.com/return) tags from constructors by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/55136
-* [12.x] Various URL generation bugfixes by [@stancl](https://github.com/stancl) in https://github.com/laravel/framework/pull/54811
-* Add an optional `shouldRun` method to migrations. by [@danmatthews](https://github.com/danmatthews) in https://github.com/laravel/framework/pull/55011
-* [12.x] `Uri` prevent empty query string by [@rojtjo](https://github.com/rojtjo) in https://github.com/laravel/framework/pull/55146
-* [12.x] Only call the ob_flush function if there is active buffer in eventStream by [@tonysm](https://github.com/tonysm) in https://github.com/laravel/framework/pull/55141
-* [12.x] Add CacheFlushed Event by [@tech-wolf-tw](https://github.com/tech-wolf-tw) in https://github.com/laravel/framework/pull/55142
-* [12.x] Update DateFactory method annotations for Carbon v3 compatibility by [@kayw-geek](https://github.com/kayw-geek) in https://github.com/laravel/framework/pull/55151
-* [12.x] Improve docblocks for file related methods of InteractsWithInput by [@SanderMuller](https://github.com/SanderMuller) in https://github.com/laravel/framework/pull/55156
-* [12.x] Enhance `FileViewFinder` doc-blocks by [@imanghafoori1](https://github.com/imanghafoori1) in https://github.com/laravel/framework/pull/55183
-* Support using null-safe operator with `null` value by [@willrowe](https://github.com/willrowe) in https://github.com/laravel/framework/pull/55175
-* [12.x] Fix: Make Paginated Queries Consistent Across Pages by [@tomchkk](https://github.com/tomchkk) in https://github.com/laravel/framework/pull/55176
-* [12.x] Add `pipe` method query builders by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/framework/pull/55171
-* [12.x] fix: one of many subquery constraints by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/framework/pull/55168
-* [12.x] fix(postgres): missing parentheses in whereDate/whereTime for json columns by [@saibotk](https://github.com/saibotk) in https://github.com/laravel/framework/pull/55159
-* Fix factory creation through attributes  by [@davidstoker](https://github.com/davidstoker) in https://github.com/laravel/framework/pull/55190
-* [12.x] Fix Concurrency::run to preserve callback result order by [@chaker2710](https://github.com/chaker2710) in https://github.com/laravel/framework/pull/55161
-* [12.x] Log: Add optional keys parameter to `Log::withoutContext` to remove selected context from future logs by [@mattroylloyd](https://github.com/mattroylloyd) in https://github.com/laravel/framework/pull/55181
-* [12.x] Add `Expression` type to param `$value` of `QueryBuilder` `having()` method by [@faissaloux](https://github.com/faissaloux) in https://github.com/laravel/framework/pull/55200
-* [12.x] Add flag to disable where clauses for `withAttributes` method on Eloquent Builder  by [@AndrewMast](https://github.com/AndrewMast) in https://github.com/laravel/framework/pull/55199
+- Made compatible with CommonMark spec 0.31.0, including:
+    - Allow closing fence to be followed by tabs
+    - Remove restrictive limitation on inline comments
+    - Unicode symbols now treated like punctuation (for purposes of flankingness)
+    - Trailing tabs on the last line of indented code blocks will be excluded
+    - Improved HTML comment matching
+- `Paragraph`s only containing link reference definitions will be kept in the AST until the `Document` is finalized
+    - (These were previously removed immediately after parsing the `Paragraph`)
 
-## [v12.3.0](https://github.com/laravel/framework/compare/v12.2.0...v12.3.0) - 2025-03-18
+### Fixed
 
-* [12.x] fixes https://github.com/laravel/octane/issues/1010 by [@mihaileu](https://github.com/mihaileu) in https://github.com/laravel/framework/pull/55008
-* Added the missing 'trashed' event to getObservablesEvents() by [@duemti](https://github.com/duemti) in https://github.com/laravel/framework/pull/55004
-* [12.x] Enhance PHPDoc for Manager classes with `@param-closure-this` by [@kayw-geek](https://github.com/kayw-geek) in https://github.com/laravel/framework/pull/55002
-* [12.x] Fix `PendingRequest` typehints for `post`, `patch`, `put`, `delete` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/54998
-* [12.x] Add test for untested methods in LazyCollection by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/54996
-* [12.x] fix indentation by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/54995
-* [12.x] apply final Pint fixes by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55014
-* Enhance validation tests: Add test for connection name detection in Unique rule by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/54993
-* [12.x] Add json:unicode cast to support JSON_UNESCAPED_UNICODE encoding by [@fuwasegu](https://github.com/fuwasegu) in https://github.com/laravel/framework/pull/54992
-* [12.x] Add “Storage Linked” to the `about` command by [@adampatterson](https://github.com/adampatterson) in https://github.com/laravel/framework/pull/54949
-* [12.x] Add support for native JSON/JSONB column types in SQLite Schema builder by [@fuwasegu](https://github.com/fuwasegu) in https://github.com/laravel/framework/pull/54991
-* [12.x] Fix `LogManager::configurationFor()` typehint by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/55016
-* [12.x] Add missing tests for LazyCollection methods by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/55022
-* [12.x] Refactor: Structural improvement for clarity by [@AhmedAlaa4611](https://github.com/AhmedAlaa4611) in https://github.com/laravel/framework/pull/55018
-* Improve `toKilobytes` to handle spaces and case-insensitive units by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/55019
-* [12.x] Fix mistake in `asJson` call in `HasAttributes.php` that was recently introduced by [@AndrewMast](https://github.com/AndrewMast) in https://github.com/laravel/framework/pull/55017
-* [12.x] reapply Pint style changes by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55015
-* Add validation test for forEach with null and empty array values by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/55047
-* [12.x] Types: EnumeratesValues Sum by [@liamduckett](https://github.com/liamduckett) in https://github.com/laravel/framework/pull/55044
-* [12.x] Ensure Consistent Formatting in Generated Invokable Classes by [@AhmedAlaa4611](https://github.com/AhmedAlaa4611) in https://github.com/laravel/framework/pull/55034
-* Add element type to return array in Filesystem by [@AJenbo](https://github.com/AJenbo) in https://github.com/laravel/framework/pull/55031
-* [12.x] Add support for PostgreSQL "unique nulls not distinct" by [@thierry2015](https://github.com/thierry2015) in https://github.com/laravel/framework/pull/55025
-* [12.x] standardize multiline ternaries by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55056
-* [12.x] improved readability for `aliasedPivotColumns` by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55055
-* [12.x] remove progress bar from PHPStan output by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55054
-* [12.x] Fixes how the fluent Date rule builder handles `date_format` by [@AndrewMast](https://github.com/AndrewMast) in https://github.com/laravel/framework/pull/55052
-* Adding SSL encryption and support for MySQL connection by [@mdiktushar](https://github.com/mdiktushar) in https://github.com/laravel/framework/pull/55048
-* Revert "Adding SSL encryption and support for MySQL connection" by [@taylorotwell](https://github.com/taylorotwell) in https://github.com/laravel/framework/pull/55057
-* Ensure queue property is nullable by [@timacdonald](https://github.com/timacdonald) in https://github.com/laravel/framework/pull/55058
-* [12.x] return `$this` for chaining by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55060
-* [12.x] prefer `new Collection` over `collect()` by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55059
-* [12.x] use "class-string" type for `using` pivot model by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55053
-* [12.x] multiline chaining on Collections by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/55061
+- Fixed list tightness not being determined properly in some edge cases
+- Fixed incorrect ending line numbers for several block types in various scenarios
+- Fixed lowercase inline HTML declarations not being accepted
 
-## [v12.2.0](https://github.com/laravel/framework/compare/v12.1.1...v12.2.0) - 2025-03-12
+## [2.4.4] - 2024-07-22
 
-* Add dates to allowed PHPDoc types of Builder::having() by [@miken32](https://github.com/miken32) in https://github.com/laravel/framework/pull/54899
-* [11.x] Fix double negative in `whereNotMorphedTo()` query by [@owenvoke](https://github.com/owenvoke) in https://github.com/laravel/framework/pull/54902
-* Add test for Arr::partition by [@liamduckett](https://github.com/liamduckett) in https://github.com/laravel/framework/pull/54913
-* [11.x] Expose process checkTimeout method by [@mattmcdev](https://github.com/mattmcdev) in https://github.com/laravel/framework/pull/54912
-* [12.x] Compilable for Validation Contract by [@peterfox](https://github.com/peterfox) in https://github.com/laravel/framework/pull/54882
-* [11.x] Backport "Change `paginate()` method return types to `\Illuminate\Pagination\LengthAwarePaginator`" by [@carestad](https://github.com/carestad) in https://github.com/laravel/framework/pull/54917
-* [11.x] Revert faulty change to `EnumeratesValues::ensure()` doc block by [@axlon](https://github.com/axlon) in https://github.com/laravel/framework/pull/54919
-* Ensure ValidationEmailRuleTest skips tests requiring the intl extension when unavailable by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/54918
-* ✅ Ensure Enum validation is case-sensitive by adding a new test case. by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/54922
-* [12.x] Feature: Collection chunk without preserving keys by [@liamduckett](https://github.com/liamduckett) in https://github.com/laravel/framework/pull/54916
-* [12.x] Add test coverage for Uri::withQueryIfMissing method by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/54923
-* Fix issue with using RedisCluster with compression or serialization by [@rzv-me](https://github.com/rzv-me) in https://github.com/laravel/framework/pull/54934
-* [12.x] Add test coverage for Str::replaceMatches method  by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/54930
-* [12.x] Types: Collection chunk without preserving keys  by [@liamduckett](https://github.com/liamduckett) in https://github.com/laravel/framework/pull/54924
-* [12.x] Add `ddBody` method to TestResponse for dumping various response payloads by [@Sammyjo20](https://github.com/Sammyjo20) in https://github.com/laravel/framework/pull/54933
-* [11.x] Backport "Fix issue with using `RedisCluster` with compression or serialization" by [@rzv-me](https://github.com/rzv-me) in https://github.com/laravel/framework/pull/54935
-* [12.x] feat: add `CanBeOneOfMany` support to `HasOneThrough` by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/framework/pull/54759
-* [12.x] Hotfix - Add function_exists check to ddBody in TestResponse by [@Sammyjo20](https://github.com/Sammyjo20) in https://github.com/laravel/framework/pull/54937
-* [12.x] Refactor: Remove unnecessary variables in Str class methods by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/54963
-* Add Tests for Str::pluralPascal Method by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/54957
-* [12.x] Fix visibility of setUp and tearDown in tests by [@naopusyu](https://github.com/naopusyu) in https://github.com/laravel/framework/pull/54950
-* [12.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54944
-* Fix missing return in `assertOnlyInvalid` by [@parth391](https://github.com/parth391) in https://github.com/laravel/framework/pull/54941
-* Handle case when migrate:install command is called and table exists by [@joe-tito](https://github.com/joe-tito) in https://github.com/laravel/framework/pull/54938
-* [11.x] Fix callOnce in Seeder so it handles arrays properly by [@lbovit](https://github.com/lbovit) in https://github.com/laravel/framework/pull/54985
-* Change "exceptoin" spelling mistake to "exception" by [@hvlucas](https://github.com/hvlucas) in https://github.com/laravel/framework/pull/54979
-* [12.x] Add test for after method in LazyCollection by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/54978
-* [12.x] Add `increment` and `decrement` methods to `Context` by [@mattmcdev](https://github.com/mattmcdev) in https://github.com/laravel/framework/pull/54976
-* Ensure ExcludeIf correctly rejects a null value as an invalid condition by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/54973
-* [12.x] apply Pint rule "no_spaces_around_offset" by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/54970
-* [12.x] apply Pint rule "single_line_comment_style" by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/54969
-* [12.x] do not use mix of newline and inline formatting by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/54967
-* [12.x] use single indent for multiline ternaries by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/54971
+### Fixed
 
-## [v12.1.1](https://github.com/laravel/framework/compare/v12.1.0...v12.1.1) - 2025-03-05
+- Fixed SmartPunct extension changing already-formatted quotation marks (#1030)
 
-* [11.x] Add valid values to ensure method by [@lancepioch](https://github.com/lancepioch) in https://github.com/laravel/framework/pull/54840
-* Fix attribute name used on `Validator` instance within certain rule classes by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54845
-* [11.x] Fix `Application::interBasePath()` fails to resolve application when project name is "vendor" by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54871
-* [11.x] Test improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54879
-* [12.x] DocBlock: Changed typehint for `Arr::partition` method by [@AndrewMast](https://github.com/AndrewMast) in https://github.com/laravel/framework/pull/54896
-* Enhance Email and Image Dimensions Validation Tests by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/54897
-* [12.x] Apply default styling rules to the notification stub by [@ahinkle](https://github.com/ahinkle) in https://github.com/laravel/framework/pull/54895
+## [2.4.3] - 2024-07-22
 
-## [v12.1.0](https://github.com/laravel/framework/compare/v12.0.1...v12.1.0) - 2025-03-04
+### Fixed
 
-* [12.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54782
-* [12.x] Fix incorrect typehints in `BuildsWhereDateClauses` traits by [@mohprilaksono](https://github.com/mohprilaksono) in https://github.com/laravel/framework/pull/54784
-* [12.x] Improve queries readablility by [@hafezdivandari](https://github.com/hafezdivandari) in https://github.com/laravel/framework/pull/54791
-* [12.x] Enhance eventStream to Support Custom Events and Start Messages by [@devhammed](https://github.com/devhammed) in https://github.com/laravel/framework/pull/54776
-* [12.x] Make the PendingCommand class tappable. by [@kevinb1989](https://github.com/kevinb1989) in https://github.com/laravel/framework/pull/54801
-* [12.x] Add missing union type in event stream docblock by [@devhammed](https://github.com/devhammed) in https://github.com/laravel/framework/pull/54800
-* Change return types of `paginage()` methods to `\Illuminate\Pagination\LengthAwarePaginator` by [@carestad](https://github.com/carestad) in https://github.com/laravel/framework/pull/54826
-* [12.x] Check if internal `Hasher::verifyConfiguration()` method exists on driver before forwarding call by [@rodrigopedra](https://github.com/rodrigopedra) in https://github.com/laravel/framework/pull/54833
-* [11.x] Fix using `AsStringable` cast on Notifiable's key by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54818
-* Add Tests for Handling Null Primary Keys and Special Values in Unique Validation Rule by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/54823
-* Improve docblock for with() method to clarify it adds to existing eag… by [@igorlealantunes](https://github.com/igorlealantunes) in https://github.com/laravel/framework/pull/54838
-* [12.x] Fix dropping schema-qualified prefixed tables by [@hafezdivandari](https://github.com/hafezdivandari) in https://github.com/laravel/framework/pull/54834
-* [12.x] Add `Context::scope()` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/54799
-* Allow Http requests to be recorded without requests being faked by [@kemp](https://github.com/kemp) in https://github.com/laravel/framework/pull/54850
-* [12.x] Adds a new method "getRawSql" (with embedded bindings) to the QueryException class by [@erickcomp](https://github.com/erickcomp) in https://github.com/laravel/framework/pull/54849
-* Update Inspiring.php by [@ju-gow](https://github.com/ju-gow) in https://github.com/laravel/framework/pull/54846
-* [12.x] Correct use of named argument in `Date` facade and fix a return type.  by [@lmottasin](https://github.com/lmottasin) in https://github.com/laravel/framework/pull/54847
-* Add additional tests for Rule::array validation scenarios by [@alikhosravidev](https://github.com/alikhosravidev) in https://github.com/laravel/framework/pull/54844
-* [12.x] Remove return statement  by [@mohprilaksono](https://github.com/mohprilaksono) in https://github.com/laravel/framework/pull/54842
-* Fix typos by [@co63oc](https://github.com/co63oc) in https://github.com/laravel/framework/pull/54839
-* [12.x] Do not loop through middleware when excluded is empty by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/54837
-* Add test for Arr::reject method in Illuminate Support by [@mohammadrasoulasghari](https://github.com/mohammadrasoulasghari) in https://github.com/laravel/framework/pull/54863
-* [12.x] Feature: Array partition by [@liamduckett](https://github.com/liamduckett) in https://github.com/laravel/framework/pull/54859
-* [12.x] Introduce `ContextLogProcessor` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/54851
+- Fixed the Attributes extension not supporting CSS level 3 selectors (#1013)
+- Fixed `UrlAutolinkParser` incorrectly parsing text containing `www` anywhere before an autolink (#1025)
 
-## [v12.0.1](https://github.com/laravel/framework/compare/v12.0.0...v12.0.1) - 2025-02-24
 
-## [v12.0.0](https://github.com/laravel/framework/compare/v11.44.0..v12.0.0...v12.0.0) - 2025-02-24
+## [2.4.2] - 2024-02-02
 
-* [12.x] Prep Laravel v12 by [@driesvints](https://github.com/driesvints) in https://github.com/laravel/framework/pull/50406
-* [12.x] Make `Str::is()` match multiline strings by [@SjorsO](https://github.com/SjorsO) in https://github.com/laravel/framework/pull/51196
-* [12.x] Use native MariaDB CLI commands by [@staudenmeir](https://github.com/staudenmeir) in https://github.com/laravel/framework/pull/51505
-* [12.x] Adds missing streamJson() to ResponseFactory contract by [@wilsenhc](https://github.com/wilsenhc) in https://github.com/laravel/framework/pull/51544
-* [12.x] Preserve numeric keys on the first level of the validator rules by [@Tofandel](https://github.com/Tofandel) in https://github.com/laravel/framework/pull/51516
-* [12.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/52248
-* [12.x] mergeIfMissing allows merging with nested arrays by [@KIKOmanasijev](https://github.com/KIKOmanasijev) in https://github.com/laravel/framework/pull/52242
-* [12.x] Fix chunked queries not honoring user-defined limits and offsets by [@tonysm](https://github.com/tonysm) in https://github.com/laravel/framework/pull/52093
-* [12.x] Replace md5 with much faster xxhash by [@GrahamCampbell](https://github.com/GrahamCampbell) in https://github.com/laravel/framework/pull/52301
-* [12.x] Switch models to UUID v7 by [@staudenmeir](https://github.com/staudenmeir) in https://github.com/laravel/framework/pull/52433
-* [12.x] Improved algorithm for Number::pairs() by [@hotmeteor](https://github.com/hotmeteor) in https://github.com/laravel/framework/pull/52641
-* Removed Duplicated Prefix on DynamoDbStore.php by [@felipehertzer](https://github.com/felipehertzer) in https://github.com/laravel/framework/pull/52986
-* [12.x] feat: configure default datetime precision on per-grammar basis by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/framework/pull/51821
-* [12.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/53150
-* [12.x] Fix laravel/prompt dependency version constraint for illuminate/console by [@wouterj](https://github.com/wouterj) in https://github.com/laravel/framework/pull/53146
-* [12.x] Add generic return type to Container::instance() by [@axlon](https://github.com/axlon) in https://github.com/laravel/framework/pull/53161
-* Map output of concurrecy calls to the index of the input by [@ovp87](https://github.com/ovp87) in https://github.com/laravel/framework/pull/53135
-* Change Composer hasPackage to public by [@buihanh2304](https://github.com/buihanh2304) in https://github.com/laravel/framework/pull/53282
-* [12.x] force `Eloquent\Collection::partition` to return a base `Collection` by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53304
-* [12.x] Better support for multi-dbs in the `RefreshDatabase` trait by [@tonysm](https://github.com/tonysm) in https://github.com/laravel/framework/pull/53231
-* [12.x] Validate UUID's version optionally by [@shaedrich](https://github.com/shaedrich) in https://github.com/laravel/framework/pull/53341
-* [12.x] Validate UUID version 2 and max by [@shaedrich](https://github.com/shaedrich) in https://github.com/laravel/framework/pull/53368
-* [12.x] Add step parameter to LazyCollection range method by [@Ashot1995](https://github.com/Ashot1995) in https://github.com/laravel/framework/pull/53473
-* [12.x] Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/53524
-* [12.x] Avoid breaking change `RefreshDatabase::usingInMemoryDatabase()` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/53587
-* [12.x] fix: container resolution order when resolving class dependencies by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/framework/pull/53522
-* [12.x] Change the default for scheduled command `emailOutput()` to only send email if output exists by [@onlime](https://github.com/onlime) in https://github.com/laravel/framework/pull/53774
-* [12.x] Add `hasMorePages()` to `CursorPaginator` contract by [@KennedyTedesco](https://github.com/KennedyTedesco) in https://github.com/laravel/framework/pull/53762
-* [12.x] modernize `DatabaseTokenRepository` and make consistent with `CacheTokenRepository` by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53746
-* [12.x] chore: remove support for Carbon v2 by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/framework/pull/53825
-* [12.x] use promoted properties for Auth events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53847
-* [12.x] use promoted properties for Database events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53848
-* [12.x] use promoted properties for Console events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53851
-* [12.x] use promoted properties for Mail events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53852
-* [12.x] use promoted properties for Notification events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53853
-* [12.x] use promoted properties for Routing events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53854
-* [12.x] use promoted properties for Queue events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53855
-* [12.x] Restore database token repository property documentation by [@shaedrich](https://github.com/shaedrich) in https://github.com/laravel/framework/pull/53908
-* [12.x] Use reject() instead of a negated filter() by [@shaedrich](https://github.com/shaedrich) in https://github.com/laravel/framework/pull/53925
-* [12.x] Use first-class callable syntax to improve static analysis by [@shaedrich](https://github.com/shaedrich) in https://github.com/laravel/framework/pull/53924
-* [12.x] add type declarations for Console Events by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53947
-* [12.x] use type declaration on property by [@browner12](https://github.com/browner12) in https://github.com/laravel/framework/pull/53970
-* [12.x] Update Symfony and PHPUnit dependencies by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54019
-* [12.x] Allow `when()` helper to accept Closure condition parameter by [@ziadoz](https://github.com/ziadoz) in https://github.com/laravel/framework/pull/54005
-* [12.x] Add test for collapse in collections by [@amirmohammadnajmi](https://github.com/amirmohammadnajmi) in https://github.com/laravel/framework/pull/54032
-* [12.x] Add test for benchmark utilities by [@amirmohammadnajmi](https://github.com/amirmohammadnajmi) in https://github.com/laravel/framework/pull/54055
-* [12.x] Fix once() cache when used in extended static class by [@FrittenKeeZ](https://github.com/FrittenKeeZ) in https://github.com/laravel/framework/pull/54094
-* [12.x] Ignore querystring parameters using closure when validating signed url  by [@gdebrauwer](https://github.com/gdebrauwer) in https://github.com/laravel/framework/pull/54104
-* Make `dropForeignIdFor` method complementary to `foreignIdFor` by [@willrowe](https://github.com/willrowe) in https://github.com/laravel/framework/pull/54102
-* Allow scoped disks to be scoped from other scoped disks by [@willrowe](https://github.com/willrowe) in https://github.com/laravel/framework/pull/54124
-* [12.x] Add test for Util::getParameterClassName() by [@amirmohammadnajmi](https://github.com/amirmohammadnajmi) in https://github.com/laravel/framework/pull/54209
-* Improve eloquent attach parameter consistency by [@fabpl](https://github.com/fabpl) in https://github.com/laravel/framework/pull/54225
-* [12.x] Enhance multi-database support by [@hafezdivandari](https://github.com/hafezdivandari) in https://github.com/laravel/framework/pull/54274
-* [12.x] Fix Session's `getCookieExpirationDate` incompatibility with Carbon 3 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54313
-* [12.x] Update minimum PHPUnit versions by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54323
-* [12.x] Prevent XSS vulnerabilities by excluding SVGs by default in image validation by [@SanderMuller](https://github.com/SanderMuller) in https://github.com/laravel/framework/pull/54331
-* [12.x] Convert interfaces from docblock to method by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54348
-* [12.x] Validate paths for UTF-8 characters by [@Jubeki](https://github.com/Jubeki) in https://github.com/laravel/framework/pull/54370
-* [12.x] Fix aggregate alias when using  expression by [@iamgergo](https://github.com/iamgergo) in https://github.com/laravel/framework/pull/54418
-* Added flash method to Session interface to fix IDE issues by [@eldair](https://github.com/eldair) in https://github.com/laravel/framework/pull/54421
-* Adding the withQueryString method to the paginator interface. by [@dvlpr91](https://github.com/dvlpr91) in https://github.com/laravel/framework/pull/54462
-* [12.x] feat: --memory=0 should mean skip memory exceeded verification (Breaking Change) by [@mathiasgrimm](https://github.com/mathiasgrimm) in https://github.com/laravel/framework/pull/54393
-* Auto-discover nested policies following conventional, parallel hierarchy by [@jasonmccreary](https://github.com/jasonmccreary) in https://github.com/laravel/framework/pull/54493
-* [12.x] Reintroduce PHPUnit 10.5 supports by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54490
-* [12.x] Allow limiting bcrypt hashing to 72 bytes to prevent insecure hashes. by [@waxim](https://github.com/waxim) in https://github.com/laravel/framework/pull/54509
-* [12.x] Fix accessing `Connection` property in `Grammar` classes by [@hafezdivandari](https://github.com/hafezdivandari) in https://github.com/laravel/framework/pull/54487
-* [12.x] Configure connection on SQLite connector by [@hafezdivandari](https://github.com/hafezdivandari) in https://github.com/laravel/framework/pull/54588
-* [12.x] Introduce Job@resolveQueuedJobClass() by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/54613
-* [12.x] Bind abstract from concrete's return type  by [@peterfox](https://github.com/peterfox) in https://github.com/laravel/framework/pull/54628
-* [12.x] Query builder PDO fetch modes by [@bert-w](https://github.com/bert-w) in https://github.com/laravel/framework/pull/54443
-* [12.x] Fix Illuminate components `composer.json` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54700
-* [12.x] Bump minimum `brick/math` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54694
-* [11.x] Fix parsing `PHP_CLI_SERVER_WORKERS` as `string` instead of `int` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54724
-* [11.x] Rename Redis parse connection for cluster test method to follow naming conventions by [@jackbayliss](https://github.com/jackbayliss) in https://github.com/laravel/framework/pull/54721
-* [11.x] Allow `readAt` method to use in database channel by [@utsavsomaiya](https://github.com/utsavsomaiya) in https://github.com/laravel/framework/pull/54729
-* [11.x] Fix: Custom Exceptions with Multiple Arguments does not properly rein… by [@pandiselvamm](https://github.com/pandiselvamm) in https://github.com/laravel/framework/pull/54705
-* [11.x] Update ConcurrencyTest exception reference to use namespace by [@jackbayliss](https://github.com/jackbayliss) in https://github.com/laravel/framework/pull/54732
-* [11.x] Deprecate `Factory::$modelNameResolver` by [@samlev](https://github.com/samlev) in https://github.com/laravel/framework/pull/54736
-* Update `config/app.php` to reflect laravel/laravel change for compatibility by [@askdkc](https://github.com/askdkc) in https://github.com/laravel/framework/pull/54752
-* [11x.] Improved typehints for `InteractsWithDatabase` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/54748
-* [11.x] Improved typehints for `InteractsWithExceptionHandling` && `ExceptionHandlerFake` by [@cosmastech](https://github.com/cosmastech) in https://github.com/laravel/framework/pull/54747
-* Add Env::extend to support custom adapters when loading environment variables by [@andrii-androshchuk](https://github.com/andrii-androshchuk) in https://github.com/laravel/framework/pull/54756
-* [12.x] Sync `filesystem.disk.local` configurations by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/framework/pull/54764
+### Fixed
+
+- Fixed declaration parser being too strict
+- `FencedCodeRenderer`: don't add `language-` to class if already prefixed
+
+### Deprecated
+
+- Returning dynamic values from `DelimiterProcessorInterface::getDelimiterUse()` is deprecated
+    - You should instead implement `CacheableDelimiterProcessorInterface` to help the engine perform caching to avoid performance issues.
+- Failing to set a delimiter's index (or returning `null` from `DelimiterInterface::getIndex()`) is deprecated and will not be supported in 3.0
+- Deprecated `DelimiterInterface::isActive()` and `DelimiterInterface::setActive()`, as these are no longer used by the engine
+- Deprecated `DelimiterStack::removeEarlierMatches()` and `DelimiterStack::searchByCharacter()`, as these are no longer used by the engine
+- Passing a `DelimiterInterface` as the `$stackBottom` argument to `DelimiterStack::processDelimiters()` or `::removeAll()` is deprecated and will not be supported in 3.0; pass the integer position instead.
+
+### Fixed
+
+- Fixed NUL characters not being replaced in the input
+- Fixed quadratic complexity parsing unclosed inline links
+- Fixed quadratic complexity parsing emphasis and strikethrough delimiters
+- Fixed issue where having 500,000+ delimiters could trigger a [known segmentation fault issue in PHP's garbage collection](https://bugs.php.net/bug.php?id=68606)
+- Fixed quadratic complexity deactivating link openers
+- Fixed quadratic complexity parsing long backtick code spans with no matching closers
+- Fixed catastrophic backtracking when parsing link labels/titles
+
+## [2.4.1] - 2023-08-30
+
+### Fixed
+
+- Fixed `ExternalLinkProcessor` not fully disabling the `rel` attribute when configured to do so (#992)
+
+## [2.4.0] - 2023-03-24
+
+### Added
+
+- Added generic `CommonMarkException` marker interface for all exceptions thrown by the library
+- Added several new specific exception types implementing that marker interface:
+    - `AlreadyInitializedException`
+    - `InvalidArgumentException`
+    - `IOException`
+    - `LogicException`
+    - `MissingDependencyException`
+    - `NoMatchingRendererException`
+    - `ParserLogicException`
+- Added more configuration options to the Heading Permalinks extension (#939):
+    - `heading_permalink/apply_id_to_heading` - When `true`, the `id` attribute will be applied to the heading element itself instead of the `<a>` tag
+    - `heading_permalink/heading_class` - class to apply to the heading element
+    - `heading_permalink/insert` - now accepts `none` to prevent the creation of the `<a>` link
+- Added new `table/alignment_attributes` configuration option to control how table cell alignment is rendered (#959)
+
+### Changed
+
+- Change several thrown exceptions from `RuntimeException` to `LogicException` (or something extending it), including:
+    - `CallbackGenerator`s that fail to set a URL or return an expected value
+    - `MarkdownParser` when deactivating the last block parser or attempting to get an active block parser when they've all been closed
+    - Adding items to an already-initialized `Environment`
+    - Rendering a `Node` when no renderer has been registered for it
+- `HeadingPermalinkProcessor` now throws `InvalidConfigurationException` instead of `RuntimeException` when invalid config values are given.
+- `HtmlElement::setAttribute()` no longer requires the second parameter for boolean attributes
+- Several small micro-optimizations
+- Changed Strikethrough to only allow 1 or 2 tildes per the updated GFM spec
+
+### Fixed
+
+- Fixed inaccurate `@throws` docblocks throughout the codebase, including `ConverterInterface`, `MarkdownConverter`, and `MarkdownConverterInterface`.
+    - These previously suggested that only `\RuntimeException`s were thrown, which was inaccurate as `\LogicException`s were also possible.
+
+## [2.3.9] - 2023-02-15
+
+### Fixed
+
+- Fixed autolink extension not detecting some URIs with underscores (#956)
+
+## [2.3.8] - 2022-12-10
+
+### Fixed
+
+- Fixed parsing issues when `mb_internal_encoding()` is set to something other than `UTF-8` (#951)
+
+## [2.3.7] - 2022-11-03
+
+### Fixed
+
+- Fixed `TaskListItemMarkerRenderer` not including HTML attributes set on the node by other extensions (#947)
+
+## [2.3.6] - 2022-10-30
+
+### Fixed
+
+- Fixed unquoted attribute parsing when closing curly brace is followed by certain characters (like a `.`) (#943)
+
+## [2.3.5] - 2022-07-29
+
+### Fixed
+
+- Fixed error using `InlineParserEngine` when no inline parsers are registered in the `Environment` (#908)
+
+## [2.3.4] - 2022-07-17
+
+### Changed
+
+- Made a number of small tweaks to the embed extension's parsing behavior to fix #898:
+    - Changed `EmbedStartParser` to always capture embed-like lines in container blocks, regardless of parent block type
+    - Changed `EmbedProcessor` to also remove `Embed` blocks that aren't direct children of the `Document`
+    - Increased the priority of `EmbedProcessor` to `1010`
+
+### Fixed
+
+- Fixed `EmbedExtension` not parsing embeds following a list block (#898)
+
+## [2.3.3] - 2022-06-07
+
+### Fixed
+
+- Fixed `DomainFilteringAdapter` not reindexing the embed list (#884, #885)
+
+## [2.3.2] - 2022-06-03
+
+### Fixed
+
+- Fixed FootnoteExtension stripping extra characters from tab-indented footnotes (#881)
+
+## [2.2.5] - 2022-06-03
+
+### Fixed
+
+- Fixed FootnoteExtension stripping extra characters from tab-indented footnotes (#881)
+
+## [2.3.1] - 2022-05-14
+
+### Fixed
+
+- Fixed AutolinkExtension not ignoring trailing strikethrough syntax (#867)
+
+## [2.2.4] - 2022-05-14
+
+### Fixed
+
+- Fixed AutolinkExtension not ignoring trailing strikethrough syntax (#867)
+
+## [2.3.0] - 2022-04-07
+
+### Added
+
+- Added new `EmbedExtension` (#805)
+- Added `DocumentRendererInterface` as a replacement for the now-deprecated `MarkdownRendererInterface`
+
+### Deprecated
+
+- Deprecated `MarkdownRendererInterface`; use `DocumentRendererInterface` instead
+
+## [2.2.3] - 2022-02-26
+
+### Fixed
+
+- Fixed front matter parsing with Windows line endings (#821)
+
+## [2.1.3] - 2022-02-26
+
+### Fixed
+
+- Fixed front matter parsing with Windows line endings (#821)
+
+## [2.0.4] - 2022-02-26
+
+### Fixed
+
+- Fixed front matter parsing with Windows line endings (#821)
+
+## [2.2.2] - 2022-02-13
+
+### Fixed
+
+- Fixed double-escaping of image alt text (#806, #810)
+- Fixed Psalm typehints for event class names
+
+## [2.2.1] - 2022-01-25
+
+### Fixed
+
+ - Fixed `symfony/deprecation-contracts` constraint
+
+### Removed
+
+ - Removed deprecation trigger from `MarkdownConverterInterface` to reduce noise
+
+## [2.2.0] - 2022-01-22
+
+### Added
+
+ - Added new `ConverterInterface`
+ - Added new `MarkdownToXmlConverter` class
+ - Added new `HtmlDecorator` class which can wrap existing renderers with additional HTML tags
+ - Added new `table/wrap` config to apply an optional wrapping/container element around a table (#780)
+
+### Changed
+
+ - `HtmlElement` contents can now consist of any `Stringable`, not just `HtmlElement` and `string`
+
+### Deprecated
+
+ - Deprecated `MarkdownConverterInterface` and its `convertToHtml()` method; use `ConverterInterface` and `convert()` instead
+
+## [2.1.2] - 2022-02-13
+
+### Fixed
+
+- Fixed double-escaping of image alt text (#806, #810)
+- Fixed Psalm typehints for event class names
+
+## [2.1.1] - 2022-01-02
+
+### Added
+
+ - Added missing return type to `Environment::dispatch()` to fix deprecation warning (#778)
+
+## [2.1.0] - 2021-12-05
+
+### Added
+
+- Added support for ext-yaml in FrontMatterExtension (#715)
+- Added support for symfony/yaml v6.0 in FrontMatterExtension (#739)
+- Added new `heading_permalink/aria_hidden` config option (#741)
+
+### Fixed
+
+ - Fixed PHP 8.1 deprecation warning (#759, #762)
+
+## [2.0.3] - 2022-02-13
+
+### Fixed
+
+- Fixed double-escaping of image alt text (#806, #810)
+- Fixed Psalm typehints for event class names
+
+## [2.0.2] - 2021-08-14
+
+### Changed
+
+- Bumped minimum version of league/config to support PHP 8.1
+
+### Fixed
+
+- Fixed ability to register block parsers that identify lines starting with letters (#706)
+
+## [2.0.1] - 2021-07-31
+
+### Fixed
+
+- Fixed nested autolinks (#689)
+- Fixed description lists being parsed incorrectly (#692)
+- Fixed Table of Contents not respecting Heading Permalink prefixes (#690)
+
+## [2.0.0] - 2021-07-24
+
+No changes were introduced since the previous RC2 release.
+See all entries below for a list of changes between 1.x and 2.0.
+
+## [2.0.0-rc2] - 2021-07-17
+
+### Fixed
+
+- Fixed Mentions inside of links creating nested links against the spec's rules (#688)
+
+## [2.0.0-rc1] - 2021-07-10
+
+No changes were introduced since the previous release.
+
+## [2.0.0-beta3] - 2021-07-03
+
+### Changed
+
+ - Any leading UTF-8 BOM will be stripped from the input
+ - The `getEnvironment()` method of `CommonMarkConverter` and `GithubFlavoredMarkdownConverter` will always return the concrete, configurable `Environment` for upgrading convenience
+ - Optimized AST iteration
+ - Lots of small micro-optimizations
+
+## [2.0.0-beta2] - 2021-06-27
+
+### Added
+
+- Added new `Node::iterator()` method and `NodeIterator` class for faster AST iteration (#683, #684)
+
+### Changed
+
+- Made compatible with CommonMark spec 0.30.0
+- Optimized link label parsing
+- Optimized AST iteration for a 50% performance boost in some event listeners (#683, #684)
+
+### Fixed
+
+- Fixed processing instructions with EOLs
+- Fixed case-insensitive matching for HTML tag types
+- Fixed type 7 HTML blocks incorrectly interrupting lazy paragraphs
+- Fixed newlines in reference labels not collapsing into spaces
+- Fixed link label normalization with escaped newlines
+- Fixed unnecessary AST iteration when no default attributes are configured
+
+## [2.0.0-beta1] - 2021-06-20
+
+### Added
+
+ - **Added three new extensions:**
+   - `FrontMatterExtension` ([see documentation](https://commonmark.thephpleague.com/extensions/front-matter/))
+   - `DescriptionListExtension` ([see documentation](https://commonmark.thephpleague.com/extensions/description-lists/))
+   - `DefaultAttributesExtension` ([see documentation](https://commonmark.thephpleague.com/extensions/default-attributes/))
+ - **Added new `XmlRenderer` to simplify AST debugging** ([see documentation](https://commonmark.thephpleague.com/xml/)) (#431)
+ - **Added the ability to configure disallowed raw HTML tags** (#507)
+ - **Added the ability for Mentions to use multiple characters for their symbol** (#514, #550)
+ - **Added the ability to delegate event dispatching to PSR-14 compliant event dispatcher libraries**
+ - **Added new configuration options:**
+   - Added `heading_permalink/min_heading_level` and `heading_permalink/max_heading_level` options to control which headings get permalinks (#519)
+   - Added `heading_permalink/fragment_prefix` to allow customizing the URL fragment prefix (#602)
+   - Added `footnote/backref_symbol` option for customizing backreference link appearance (#522)
+   - Added `slug_normalizer/max_length` option to control the maximum length of generated URL slugs
+   - Added `slug_normalizer/unique` option to control whether unique slugs should be generated per-document or per-environment
+ - **Added purity markers throughout the codebase** (verified with Psalm)
+ - Added `Query` class to simplify Node traversal when looking to take action on certain Nodes
+ - Added new `HtmlFilter` and `StringContainerHelper` utility classes
+ - Added new `AbstractBlockContinueParser` class to simplify the creation of custom block parsers
+ - Added several new classes and interfaces:
+   - `BlockContinue`
+   - `BlockContinueParserInterface`
+   - `BlockContinueParserWithInlinesInterface`
+   - `BlockStart`
+   - `BlockStartParserInterface`
+   - `ChildNodeRendererInterface`
+   - `ConfigurableExtensionInterface`
+   - `CursorState`
+   - `DashParser` (extracted from `PunctuationParser`)
+   - `DelimiterParser`
+   - `DocumentBlockParser`
+   - `DocumentPreRenderEvent`
+   - `DocumentRenderedEvent`
+   - `EllipsesParser` (extracted from `PunctuationParser`)
+   - `ExpressionInterface`
+   - `FallbackNodeXmlRenderer`
+   - `InlineParserEngineInterface`
+   - `InlineParserMatch`
+   - `MarkdownParserState`
+   - `MarkdownParserStateInterface`
+   - `MarkdownRendererInterface`
+   - `Query`
+   - `RawMarkupContainerInterface`
+   - `ReferenceableInterface`
+   - `RenderedContent`
+   - `RenderedContentInterface`
+   - `ReplaceUnpairedQuotesListener`
+   - `SpecReader`
+   - `TableOfContentsRenderer`
+   - `UniqueSlugNormalizer`
+   - `UniqueSlugNormalizerInterface`
+   - `XmlRenderer`
+   - `XmlNodeRendererInterface`
+ - Added several new methods:
+   - `Cursor::getCurrentCharacter()`
+   - `Environment::createDefaultConfiguration()`
+   - `Environment::setEventDispatcher()`
+   - `EnvironmentInterface::getExtensions()`
+   - `EnvironmentInterface::getInlineParsers()`
+   - `EnvironmentInterface::getSlugNormalizer()`
+   - `FencedCode::setInfo()`
+   - `Heading::setLevel()`
+   - `HtmlRenderer::renderDocument()`
+   - `InlineParserContext::getFullMatch()`
+   - `InlineParserContext::getFullMatchLength()`
+   - `InlineParserContext::getMatches()`
+   - `InlineParserContext::getSubMatches()`
+   - `LinkParserHelper::parsePartialLinkLabel()`
+   - `LinkParserHelper::parsePartialLinkTitle()`
+   - `Node::assertInstanceOf()`
+   - `RegexHelper::isLetter()`
+   - `StringContainerInterface::setLiteral()`
+   - `TableCell::getType()`
+   - `TableCell::setType()`
+   - `TableCell::getAlign()`
+   - `TableCell::setAlign()`
+
+### Changed
+
+ - **Changed the converter return type**
+   - `CommonMarkConverter::convertToHtml()` now returns an instance of `RenderedContentInterface`. This can be cast to a string for backward compatibility with 1.x.
+ - **Table of Contents items are no longer wrapped with `<p>` tags** (#613)
+ - **Heading Permalinks now link to element IDs instead of using `name` attributes** (#602)
+ - **Heading Permalink IDs and URL fragments now have a `content` prefix by default** (#602)
+ - **Changes to configuration options:**
+     - `enable_em` has been renamed to `commonmark/enable_em`
+     - `enable_strong` has been renamed to `commonmark/enable_strong`
+     - `use_asterisk` has been renamed to `commonmark/use_asterisk`
+     - `use_underscore` has been renamed to `commonmark/use_underscore`
+     - `unordered_list_markers` has been renamed to `commonmark/unordered_list_markers`
+     - `mentions/*/symbol` has been renamed to `mentions/*/prefix`
+     - `mentions/*/regex` has been renamed to `mentions/*/pattern` and requires partial regular expressions (without delimiters or flags)
+     - `max_nesting_level` now defaults to `PHP_INT_MAX` and no longer supports floats
+     - `heading_permalink/slug_normalizer` has been renamed to `slug_normalizer/instance`
+ - **Event dispatching is now fully PSR-14 compliant**
+ - **Moved and renamed several classes** - [see the full list here](https://commonmark.thephpleague.com/2.0/upgrading/#classesnamespaces-renamed)
+ - The `HeadingPermalinkExtension` and `FootnoteExtension` were modified to ensure they never produce a slug which conflicts with slugs created by the other extension
+ - `SlugNormalizer::normalizer()` now supports optional prefixes and max length options passed in via the `$context` argument
+ - The `AbstractBlock::$data` and `AbstractInline::$data` arrays were replaced with a `Data` array-like object on the base `Node` class
+ - **Implemented a new approach to block parsing.** This was a massive change, so here are the highlights:
+   - Functionality previously found in block parsers and node elements has moved to block parser factories and block parsers, respectively ([more details](https://commonmark.thephpleague.com/2.0/upgrading/#new-block-parsing-approach))
+   - `ConfigurableEnvironmentInterface::addBlockParser()` is now `EnvironmentBuilderInterface::addBlockParserFactory()`
+   - `ReferenceParser` was re-implemented and works completely different than before
+   - The paragraph parser no longer needs to be added manually to the environment
+ - **Implemented a new approach to inline parsing** where parsers can now specify longer strings or regular expressions they want to parse (instead of just single characters):
+   - `InlineParserInterface::getCharacters()` is now `getMatchDefinition()` and returns an instance of `InlineParserMatch`
+   - `InlineParserContext::__construct()` now requires the contents to be provided as a `Cursor` instead of a `string`
+ - **Implemented delimiter parsing as a special type of inline parser** (via the new `DelimiterParser` class)
+ - **Changed block and inline rendering to use common methods and interfaces**
+   - `BlockRendererInterface` and `InlineRendererInterface` were replaced by `NodeRendererInterface` with slightly different parameters. All core renderers now implement this interface.
+   - `ConfigurableEnvironmentInterface::addBlockRenderer()` and `addInlineRenderer()` were combined into `EnvironmentBuilderInterface::addRenderer()`
+   - `EnvironmentInterface::getBlockRenderersForClass()` and `getInlineRenderersForClass()` are now just `getRenderersForClass()`
+ - **Completely refactored the Configuration implementation**
+   - All configuration-specific classes have been moved into a new `league/config` package with a new namespace
+   - `Configuration` objects must now be configured with a schema and all options must match that schema - arbitrary keys are no longer permitted
+   - `Configuration::__construct()` no longer accepts the default configuration values - use `Configuration::merge()` instead
+   - `ConfigurationInterface` now only contains a `get(string $key)`; this method no longer allows arbitrary default values to be returned if the option is missing
+   - `ConfigurableEnvironmentInterface` was renamed to `EnvironmentBuilderInterface`
+   - `ExtensionInterface::register()` now requires an `EnvironmentBuilderInterface` param instead of `ConfigurableEnvironmentInterface`
+ - **Added missing return types to virtually every class and interface method**
+ - Re-implemented the GFM Autolink extension using the new inline parser approach instead of document processors
+   - `EmailAutolinkProcessor` is now `EmailAutolinkParser`
+   - `UrlAutolinkProcessor` is now `UrlAutolinkParser`
+ - `HtmlElement` can now properly handle array (i.e. `class`) and boolean (i.e. `checked`) attribute values
+ - `HtmlElement` automatically flattens any attributes with array values into space-separated strings, removing duplicate entries
+ - Combined separate classes/interfaces into one:
+   - `DisallowedRawHtmlRenderer` replaces `DisallowedRawHtmlBlockRenderer` and `DisallowedRawHtmlInlineRenderer`
+   - `NodeRendererInterface` replaces `BlockRendererInterface` and `InlineRendererInterface`
+ - Renamed the following methods:
+   - `Environment` and `ConfigurableEnvironmentInterface`:
+     - `addBlockParser()` is now `addBlockStartParser()`
+   - `ReferenceMap` and `ReferenceMapInterface`:
+     - `addReference()` is now `add()`
+     - `getReference()` is now `get()`
+     - `listReferences()` is now `getIterator()`
+   - Various node (block/inline) classes:
+     - `getContent()` is now `getLiteral()`
+     - `setContent()` is now `setLiteral()`
+ - Moved and renamed the following constants:
+   - `EnvironmentInterface::HTML_INPUT_ALLOW` is now `HtmlFilter::ALLOW`
+   - `EnvironmentInterface::HTML_INPUT_ESCAPE` is now `HtmlFilter::ESCAPE`
+   - `EnvironmentInterface::HTML_INPUT_STRIP` is now `HtmlFilter::STRIP`
+   - `TableCell::TYPE_HEAD` is now `TableCell::TYPE_HEADER`
+   - `TableCell::TYPE_BODY` is now `TableCell::TYPE_DATA`
+ - Changed the visibility of the following properties:
+   - `AttributesInline::$attributes` is now `private`
+   - `AttributesInline::$block` is now `private`
+   - `TableCell::$align` is now `private`
+   - `TableCell::$type` is now `private`
+   - `TableSection::$type` is now `private`
+ - Several methods which previously returned `$this` now return `void`
+   - `Delimiter::setPrevious()`
+   - `Node::replaceChildren()`
+   - `Context::setTip()`
+   - `Context::setContainer()`
+   - `Context::setBlocksParsed()`
+   - `AbstractStringContainer::setContent()`
+   - `AbstractWebResource::setUrl()`
+ - Several classes are now marked `final`:
+   - `ArrayCollection`
+   - `Emphasis`
+   - `FencedCode`
+   - `Heading`
+   - `HtmlBlock`
+   - `HtmlElement`
+   - `HtmlInline`
+   - `IndentedCode`
+   - `Newline`
+   - `Strikethrough`
+   - `Strong`
+   - `Text`
+ - `Heading` nodes no longer directly contain a copy of their inner text
+ - `StringContainerInterface` can now be used for inlines, not just blocks
+ - `ArrayCollection` only supports integer keys
+ - `HtmlElement` now implements `Stringable`
+ - `Cursor::saveState()` and `Cursor::restoreState()` now use `CursorState` objects instead of arrays
+ - `NodeWalker::next()` now enters, traverses any children, and leaves all elements which may have children (basically all blocks plus any inlines with children). Previously, it only did this for elements explicitly marked as "containers".
+ - `InvalidOptionException` was removed
+ - Anything with a `getReference(): ReferenceInterface` method now implements `ReferencableInterface`
+ - The `SmartPunct` extension now replaces all unpaired `Quote` elements with `Text` elements towards the end of parsing, making the `QuoteRenderer` unnecessary
+ - Several changes made to the Footnote extension:
+   - Footnote identifiers can no longer contain spaces
+   - Anonymous footnotes can now span subsequent lines
+   - Footnotes can now contain multiple lines of content, including sub-blocks, by indenting them
+   - Footnote event listeners now have numbered priorities (but still execute in the same order)
+   - Footnotes must now be separated from previous content by a blank line
+ - The line numbers (keys) returned via `MarkdownInput::getLines()` now start at 1 instead of 0
+ - `DelimiterProcessorCollectionInterface` now extends `Countable`
+ - `RegexHelper::PARTIAL_` constants must always be used in case-insensitive contexts
+ - `HeadingPermalinkProcessor` no longer accepts text normalizers via the constructor - these must be provided via configuration instead
+ - Blocks which can't contain inlines will no longer be asked to render inlines
+ - `AnonymousFootnoteRefParser` and `HeadingPermalinkProcessor` now implement `EnvironmentAwareInterface` instead of `ConfigurationAwareInterface`
+ - The second argument to `TextNormalizerInterface::normalize()` must now be an array
+ - The `title` attribute for `Link` and `Image` nodes is now stored using a dedicated property instead of stashing it in `$data`
+ - `ListData::$delimiter` now returns either `ListBlock::DELIM_PERIOD` or `ListBlock::DELIM_PAREN` instead of the literal delimiter
+
+### Fixed
+
+ - **Fixed parsing of footnotes without content**
+ - **Fixed rendering of orphaned footnotes and footnote refs**
+ - **Fixed some URL autolinks breaking too early** (#492)
+ - Fixed `AbstractStringContainer` not actually being `abstract`
+
+### Removed
+
+ - **Removed support for PHP 7.1, 7.2, and 7.3** (#625, #671)
+ - **Removed all previously-deprecated functionality:**
+   - Removed the ability to pass custom `Environment` instances into the `CommonMarkConverter` and `GithubFlavoredMarkdownConverter` constructors
+   - Removed the `Converter` class and `ConverterInterface`
+   - Removed the `bin/commonmark` script
+   - Removed the `Html5Entities` utility class
+   - Removed the `InlineMentionParser` (use `MentionParser` instead)
+   - Removed `DefaultSlugGenerator` and `SlugGeneratorInterface` from the `Extension/HeadingPermalink/Slug` sub-namespace (use the new ones under `./SlugGenerator` instead)
+   - Removed the following `ArrayCollection` methods:
+     - `add()`
+     - `set()`
+     - `get()`
+     - `remove()`
+     - `isEmpty()`
+     - `contains()`
+     - `indexOf()`
+     - `containsKey()`
+     - `replaceWith()`
+     - `removeGaps()`
+   - Removed the `ConfigurableEnvironmentInterface::setConfig()` method
+   - Removed the `ListBlock::TYPE_UNORDERED` constant
+   - Removed the `CommonMarkConverter::VERSION` constant
+   - Removed the `HeadingPermalinkRenderer::DEFAULT_INNER_CONTENTS` constant
+   - Removed the `heading_permalink/inner_contents` configuration option
+ - **Removed now-unused classes:**
+   - `AbstractStringContainerBlock`
+   - `BlockRendererInterface`
+   - `Context`
+   - `ContextInterface`
+   - `Converter`
+   - `ConverterInterface`
+   - `InlineRendererInterface`
+   - `PunctuationParser` (was split into two classes: `DashParser` and `EllipsesParser`)
+   - `QuoteRenderer`
+   - `UnmatchedBlockCloser`
+ - Removed the following methods, properties, and constants:
+   - `AbstractBlock::$open`
+   - `AbstractBlock::$lastLineBlank`
+   - `AbstractBlock::isContainer()`
+   - `AbstractBlock::canContain()`
+   - `AbstractBlock::isCode()`
+   - `AbstractBlock::matchesNextLine()`
+   - `AbstractBlock::endsWithBlankLine()`
+   - `AbstractBlock::setLastLineBlank()`
+   - `AbstractBlock::shouldLastLineBeBlank()`
+   - `AbstractBlock::isOpen()`
+   - `AbstractBlock::finalize()`
+   - `AbstractBlock::getData()`
+   - `AbstractInline::getData()`
+   - `ConfigurableEnvironmentInterface::addBlockParser()`
+   - `ConfigurableEnvironmentInterface::mergeConfig()`
+   - `Delimiter::setCanClose()`
+   - `EnvironmentInterface::getConfig()`
+   - `EnvironmentInterface::getInlineParsersForCharacter()`
+   - `EnvironmentInterface::getInlineParserCharacterRegex()`
+   - `HtmlRenderer::renderBlock()`
+   - `HtmlRenderer::renderBlocks()`
+   - `HtmlRenderer::renderInline()`
+   - `HtmlRenderer::renderInlines()`
+   - `Node::isContainer()`
+   - `RegexHelper::matchAll()` (use the new `matchFirst()` method instead)
+   - `RegexHelper::REGEX_WHITESPACE`
+ - Removed the second `$contents` argument from the `Heading` constructor
+
+### Deprecated
+
+**The following things have been deprecated and will not be supported in v3.0:**
+
+ - `Environment::mergeConfig()` (set configuration before instantiation instead)
+ - `Environment::createCommonMarkEnvironment()` and `Environment::createGFMEnvironment()`
+    - Alternative 1: Use `CommonMarkConverter` or `GithubFlavoredMarkdownConverter` if you don't need to customize the environment
+    - Alternative 2: Instantiate a new `Environment` and add the necessary extensions yourself
+
+[unreleased]: https://github.com/thephpleague/commonmark/compare/2.7.0...HEAD
+[2.7.0]: https://github.com/thephpleague/commonmark/compare/2.6.2...2.7.0
+[2.6.2]: https://github.com/thephpleague/commonmark/compare/2.6.1...2.6.2
+[2.6.1]: https://github.com/thephpleague/commonmark/compare/2.6.0...2.6.1
+[2.6.0]: https://github.com/thephpleague/commonmark/compare/2.5.3...2.6.0
+[2.5.3]: https://github.com/thephpleague/commonmark/compare/2.5.2...2.5.3
+[2.5.2]: https://github.com/thephpleague/commonmark/compare/2.5.1...2.5.2
+[2.5.1]: https://github.com/thephpleague/commonmark/compare/2.5.0...2.5.1
+[2.5.0]: https://github.com/thephpleague/commonmark/compare/2.4.4...2.5.0
+[2.4.4]: https://github.com/thephpleague/commonmark/compare/2.4.3...2.4.4
+[2.4.3]: https://github.com/thephpleague/commonmark/compare/2.4.2...2.4.3
+[2.4.2]: https://github.com/thephpleague/commonmark/compare/2.4.1...2.4.2
+[2.4.1]: https://github.com/thephpleague/commonmark/compare/2.4.0...2.4.1
+[2.4.0]: https://github.com/thephpleague/commonmark/compare/2.3.9...2.4.0
+[2.3.9]: https://github.com/thephpleague/commonmark/compare/2.3.8...2.3.9
+[2.3.8]: https://github.com/thephpleague/commonmark/compare/2.3.7...2.3.8
+[2.3.7]: https://github.com/thephpleague/commonmark/compare/2.3.6...2.3.7
+[2.3.6]: https://github.com/thephpleague/commonmark/compare/2.3.5...2.3.6
+[2.3.5]: https://github.com/thephpleague/commonmark/compare/2.3.4...2.3.5
+[2.3.4]: https://github.com/thephpleague/commonmark/compare/2.3.3...2.3.4
+[2.3.3]: https://github.com/thephpleague/commonmark/compare/2.3.2...2.3.3
+[2.3.2]: https://github.com/thephpleague/commonmark/compare/2.3.2...main
+[2.3.1]: https://github.com/thephpleague/commonmark/compare/2.3.0...2.3.1
+[2.3.0]: https://github.com/thephpleague/commonmark/compare/2.2.3...2.3.0
+[2.2.5]: https://github.com/thephpleague/commonmark/compare/2.2.4...2.2.5
+[2.2.4]: https://github.com/thephpleague/commonmark/compare/2.2.3...2.2.4
+[2.2.3]: https://github.com/thephpleague/commonmark/compare/2.2.2...2.2.3
+[2.2.2]: https://github.com/thephpleague/commonmark/compare/2.2.1...2.2.2
+[2.2.1]: https://github.com/thephpleague/commonmark/compare/2.2.0...2.2.1
+[2.2.0]: https://github.com/thephpleague/commonmark/compare/2.1.1...2.2.0
+[2.1.3]: https://github.com/thephpleague/commonmark/compare/2.1.2...2.1.3
+[2.1.2]: https://github.com/thephpleague/commonmark/compare/2.1.1...2.1.2
+[2.1.1]: https://github.com/thephpleague/commonmark/compare/2.0.2...2.1.1
+[2.1.0]: https://github.com/thephpleague/commonmark/compare/2.0.2...2.1.0
+[2.0.4]: https://github.com/thephpleague/commonmark/compare/2.0.3...2.0.4
+[2.0.3]: https://github.com/thephpleague/commonmark/compare/2.0.2...2.0.3
+[2.0.2]: https://github.com/thephpleague/commonmark/compare/2.0.1...2.0.2
+[2.0.1]: https://github.com/thephpleague/commonmark/compare/2.0.0...2.0.1
+[2.0.0]: https://github.com/thephpleague/commonmark/compare/2.0.0-rc2...2.0.0
+[2.0.0-rc2]: https://github.com/thephpleague/commonmark/compare/2.0.0-rc1...2.0.0-rc2
+[2.0.0-rc1]: https://github.com/thephpleague/commonmark/compare/2.0.0-beta3...2.0.0-rc1
+[2.0.0-beta3]: https://github.com/thephpleague/commonmark/compare/2.0.0-beta2...2.0.0-beta3
+[2.0.0-beta2]: https://github.com/thephpleague/commonmark/compare/2.0.0-beta1...2.0.0-beta2
+[2.0.0-beta1]: https://github.com/thephpleague/commonmark/compare/1.6...2.0.0-beta1
