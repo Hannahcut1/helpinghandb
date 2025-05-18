@@ -1,136 +1,187 @@
 <?php
 
-namespace Illuminate\Contracts\Pagination;
+namespace Illuminate\Pagination;
+
+use ArrayAccess;
+use Countable;
+use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
+use IteratorAggregate;
+use JsonSerializable;
 
 /**
  * @template TKey of array-key
  *
  * @template-covariant TValue
+ *
+ * @extends AbstractPaginator<TKey, TValue>
+ *
+ * @implements Arrayable<TKey, TValue>
+ * @implements ArrayAccess<TKey, TValue>
+ * @implements IteratorAggregate<TKey, TValue>
+ * @implements PaginatorContract<TKey, TValue>
  */
-interface Paginator
+class Paginator extends AbstractPaginator implements Arrayable, ArrayAccess, Countable, IteratorAggregate, Jsonable, JsonSerializable, PaginatorContract
 {
     /**
-     * Get the URL for a given page.
+     * Determine if there are more items in the data source.
      *
-     * @param  int  $page
-     * @return string
+     * @return bool
      */
-    public function url($page);
+    protected $hasMore;
 
     /**
-     * Add a set of query string values to the paginator.
+     * Create a new paginator instance.
      *
-     * @param  array|string|null  $key
-     * @param  string|null  $value
-     * @return $this
+     * @param  Collection<TKey, TValue>|Arrayable<TKey, TValue>|iterable<TKey, TValue>  $items
+     * @param  int  $perPage
+     * @param  int|null  $currentPage
+     * @param  array  $options  (path, query, fragment, pageName)
      */
-    public function appends($key, $value = null);
+    public function __construct($items, $perPage, $currentPage = null, array $options = [])
+    {
+        $this->options = $options;
+
+        foreach ($options as $key => $value) {
+            $this->{$key} = $value;
+        }
+
+        $this->perPage = $perPage;
+        $this->currentPage = $this->setCurrentPage($currentPage);
+        $this->path = $this->path !== '/' ? rtrim($this->path, '/') : $this->path;
+
+        $this->setItems($items);
+    }
 
     /**
-     * Get / set the URL fragment to be appended to URLs.
+     * Get the current page for the request.
      *
-     * @param  string|null  $fragment
-     * @return $this|string|null
-     */
-    public function fragment($fragment = null);
-
-    /**
-     * Add all current query string values to the paginator.
-     *
-     * @return $this
-     */
-    public function withQueryString();
-
-    /**
-     * The URL for the next page, or null.
-     *
-     * @return string|null
-     */
-    public function nextPageUrl();
-
-    /**
-     * Get the URL for the previous page, or null.
-     *
-     * @return string|null
-     */
-    public function previousPageUrl();
-
-    /**
-     * Get all of the items being paginated.
-     *
-     * @return array<TKey, TValue>
-     */
-    public function items();
-
-    /**
-     * Get the "index" of the first item being paginated.
-     *
-     * @return int|null
-     */
-    public function firstItem();
-
-    /**
-     * Get the "index" of the last item being paginated.
-     *
-     * @return int|null
-     */
-    public function lastItem();
-
-    /**
-     * Determine how many items are being shown per page.
-     *
+     * @param  int  $currentPage
      * @return int
      */
-    public function perPage();
+    protected function setCurrentPage($currentPage)
+    {
+        $currentPage = $currentPage ?: static::resolveCurrentPage();
+
+        return $this->isValidPageNumber($currentPage) ? (int) $currentPage : 1;
+    }
 
     /**
-     * Determine the current page being paginated.
+     * Set the items for the paginator.
      *
-     * @return int
+     * @param  Collection<TKey, TValue>|Arrayable<TKey, TValue>|iterable<TKey, TValue>|null  $items
+     * @return void
      */
-    public function currentPage();
+    protected function setItems($items)
+    {
+        $this->items = $items instanceof Collection ? $items : new Collection($items);
+
+        $this->hasMore = $this->items->count() > $this->perPage;
+
+        $this->items = $this->items->slice(0, $this->perPage);
+    }
 
     /**
-     * Determine if there are enough items to split into multiple pages.
-     *
-     * @return bool
-     */
-    public function hasPages();
-
-    /**
-     * Determine if there are more items in the data store.
-     *
-     * @return bool
-     */
-    public function hasMorePages();
-
-    /**
-     * Get the base path for paginator generated URLs.
+     * Get the URL for the next page.
      *
      * @return string|null
      */
-    public function path();
+    public function nextPageUrl()
+    {
+        if ($this->hasMorePages()) {
+            return $this->url($this->currentPage() + 1);
+        }
+    }
 
     /**
-     * Determine if the list of items is empty or not.
-     *
-     * @return bool
-     */
-    public function isEmpty();
-
-    /**
-     * Determine if the list of items is not empty.
-     *
-     * @return bool
-     */
-    public function isNotEmpty();
-
-    /**
-     * Render the paginator using a given view.
+     * Render the paginator using the given view.
      *
      * @param  string|null  $view
      * @param  array  $data
      * @return string
      */
-    public function render($view = null, $data = []);
+    public function links($view = null, $data = [])
+    {
+        return $this->render($view, $data);
+    }
+
+    /**
+     * Render the paginator using the given view.
+     *
+     * @param  string|null  $view
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Support\Htmlable
+     */
+    public function render($view = null, $data = [])
+    {
+        return static::viewFactory()->make($view ?: static::$defaultSimpleView, array_merge($data, [
+            'paginator' => $this,
+        ]));
+    }
+
+    /**
+     * Manually indicate that the paginator does have more pages.
+     *
+     * @param  bool  $hasMore
+     * @return $this
+     */
+    public function hasMorePagesWhen($hasMore = true)
+    {
+        $this->hasMore = $hasMore;
+
+        return $this;
+    }
+
+    /**
+     * Determine if there are more items in the data source.
+     *
+     * @return bool
+     */
+    public function hasMorePages()
+    {
+        return $this->hasMore;
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'current_page' => $this->currentPage(),
+            'data' => $this->items->toArray(),
+            'first_page_url' => $this->url(1),
+            'from' => $this->firstItem(),
+            'next_page_url' => $this->nextPageUrl(),
+            'path' => $this->path(),
+            'per_page' => $this->perPage(),
+            'prev_page_url' => $this->previousPageUrl(),
+            'to' => $this->lastItem(),
+        ];
+    }
+
+    /**
+     * Convert the object into something JSON serializable.
+     *
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Convert the object to its JSON representation.
+     *
+     * @param  int  $options
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->jsonSerialize(), $options);
+    }
 }
