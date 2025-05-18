@@ -4,25 +4,74 @@ namespace Illuminate\Process;
 
 use Illuminate\Contracts\Process\ProcessResult as ProcessResultContract;
 use Illuminate\Process\Exceptions\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Collection;
 
-class ProcessResult implements ProcessResultContract
+class FakeProcessResult implements ProcessResultContract
 {
     /**
-     * The underlying process instance.
+     * The command string.
      *
-     * @var \Symfony\Component\Process\Process
+     * @var string
      */
-    protected $process;
+    protected $command;
+
+    /**
+     * The process exit code.
+     *
+     * @var int
+     */
+    protected $exitCode;
+
+    /**
+     * The process output.
+     *
+     * @var string
+     */
+    protected $output = '';
+
+    /**
+     * The process error output.
+     *
+     * @var string
+     */
+    protected $errorOutput = '';
 
     /**
      * Create a new process result instance.
      *
-     * @param  \Symfony\Component\Process\Process  $process
+     * @param  string  $command
+     * @param  int  $exitCode
+     * @param  array|string  $output
+     * @param  array|string  $errorOutput
      */
-    public function __construct(Process $process)
+    public function __construct(string $command = '', int $exitCode = 0, array|string $output = '', array|string $errorOutput = '')
     {
-        $this->process = $process;
+        $this->command = $command;
+        $this->exitCode = $exitCode;
+        $this->output = $this->normalizeOutput($output);
+        $this->errorOutput = $this->normalizeOutput($errorOutput);
+    }
+
+    /**
+     * Normalize the given output into a string with newlines.
+     *
+     * @param  array|string  $output
+     * @return string
+     */
+    protected function normalizeOutput(array|string $output)
+    {
+        if (empty($output)) {
+            return '';
+        } elseif (is_string($output)) {
+            return rtrim($output, "\n")."\n";
+        } elseif (is_array($output)) {
+            return rtrim(
+                (new Collection($output))
+                    ->map(fn ($line) => rtrim($line, "\n")."\n")
+                    ->implode(''),
+                "\n"
+            );
+        }
     }
 
     /**
@@ -32,7 +81,18 @@ class ProcessResult implements ProcessResultContract
      */
     public function command()
     {
-        return $this->process->getCommandLine();
+        return $this->command;
+    }
+
+    /**
+     * Create a new fake process result with the given command.
+     *
+     * @param  string  $command
+     * @return self
+     */
+    public function withCommand(string $command)
+    {
+        return new FakeProcessResult($command, $this->exitCode, $this->output, $this->errorOutput);
     }
 
     /**
@@ -42,7 +102,7 @@ class ProcessResult implements ProcessResultContract
      */
     public function successful()
     {
-        return $this->process->isSuccessful();
+        return $this->exitCode === 0;
     }
 
     /**
@@ -58,11 +118,11 @@ class ProcessResult implements ProcessResultContract
     /**
      * Get the exit code of the process.
      *
-     * @return int|null
+     * @return int
      */
     public function exitCode()
     {
-        return $this->process->getExitCode();
+        return $this->exitCode;
     }
 
     /**
@@ -72,7 +132,7 @@ class ProcessResult implements ProcessResultContract
      */
     public function output()
     {
-        return $this->process->getOutput();
+        return $this->output;
     }
 
     /**
@@ -93,7 +153,7 @@ class ProcessResult implements ProcessResultContract
      */
     public function errorOutput()
     {
-        return $this->process->getErrorOutput();
+        return $this->errorOutput;
     }
 
     /**
