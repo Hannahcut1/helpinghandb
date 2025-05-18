@@ -1,294 +1,135 @@
-Mockery
-=======
+![Monolog](logo.jpg)
 
-[![Build Status](https://github.com/mockery/mockery/actions/workflows/tests.yml/badge.svg)](https://github.com/mockery/mockery/actions)
-[![Supported PHP Version](https://badgen.net/packagist/php/mockery/mockery?color=8892bf)](https://www.php.net/supported-versions)
-[![Code Coverage](https://codecov.io/gh/mockery/mockery/branch/1.6.x/graph/badge.svg?token=oxHwVM56bT)](https://codecov.io/gh/mockery/mockery)
-[![Type Coverage](https://shepherd.dev/github/mockery/mockery/coverage.svg)](https://shepherd.dev/github/mockery/mockery)
-[![Latest Stable Version](https://poser.pugx.org/mockery/mockery/v/stable.svg)](https://packagist.org/packages/mockery/mockery)
-[![Total Downloads](https://poser.pugx.org/mockery/mockery/downloads.svg)](https://packagist.org/packages/mockery/mockery)
+# Monolog - Logging for PHP [![Continuous Integration](https://github.com/Seldaek/monolog/workflows/Continuous%20Integration/badge.svg?branch=main)](https://github.com/Seldaek/monolog/actions)
 
-Mockery is a simple yet flexible PHP mock object framework for use in unit testing
-with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a
-test double framework with a succinct API capable of clearly defining all possible
-object operations and interactions using a human readable Domain Specific Language
-(DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library,
-Mockery is easy to integrate with PHPUnit and can operate alongside
-phpunit-mock-objects without the World ending.
+[![Total Downloads](https://img.shields.io/packagist/dt/monolog/monolog.svg)](https://packagist.org/packages/monolog/monolog)
+[![Latest Stable Version](https://img.shields.io/packagist/v/monolog/monolog.svg)](https://packagist.org/packages/monolog/monolog)
 
-Mockery is released under a New BSD License.
+>**Note** This is the **documentation for Monolog 3.x**, if you are using older releases
+>see the documentation for [Monolog 2.x](https://github.com/Seldaek/monolog/blob/2.x/README.md) or [Monolog 1.x](https://github.com/Seldaek/monolog/blob/1.x/README.md)
+
+Monolog sends your logs to files, sockets, inboxes, databases and various
+web services. See the complete list of handlers below. Special handlers
+allow you to build advanced logging strategies.
+
+This library implements the [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
+interface that you can type-hint against in your own libraries to keep
+a maximum of interoperability. You can also use it in your applications to
+make sure you can always use another compatible logger at a later time.
+As of 1.11.0 Monolog public APIs will also accept PSR-3 log levels.
+Internally Monolog still uses its own level scheme since it predates PSR-3.
+
+<div align="center">
+  <hr>
+  <sup><b>Sponsored by:</b></sup>
+  <br>
+  <a href="https://betterstack.com">
+    <div>
+      <img src="https://github.com/Seldaek/monolog/assets/183678/7de58ce0-2fa2-45c0-b3e8-e60cebb3c4cf" width="200" alt="Better Stack">
+    </div>
+    <div>
+      Better Stack lets you centralize, search, and visualize your logs.
+    </div>
+  </a>
+  <br>
+  <hr>
+</div>
 
 ## Installation
 
-To install Mockery, run the command below and you will get the latest
-version
+Install the latest version with
 
-```sh
-composer require --dev mockery/mockery
+```bash
+composer require monolog/monolog
+```
+
+## Basic Usage
+
+```php
+<?php
+
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// create a log channel
+$log = new Logger('name');
+$log->pushHandler(new StreamHandler('path/to/your.log', Level::Warning));
+
+// add records to the log
+$log->warning('Foo');
+$log->error('Bar');
 ```
 
 ## Documentation
 
-In older versions, this README file was the documentation for Mockery. Over time
-we have improved this, and have created an extensive documentation for you. Please
-use this README file as a starting point for Mockery, but do read the documentation
-to learn how to use Mockery.
+- [Usage Instructions](doc/01-usage.md)
+- [Handlers, Formatters and Processors](doc/02-handlers-formatters-processors.md)
+- [Utility Classes](doc/03-utilities.md)
+- [Extending Monolog](doc/04-extending.md)
+- [Log Record Structure](doc/message-structure.md)
 
-The current version can be seen at [docs.mockery.io](http://docs.mockery.io).
+## Support Monolog Financially
 
-## PHPUnit Integration
+Get supported Monolog and help fund the project with the [Tidelift Subscription](https://tidelift.com/subscription/pkg/packagist-monolog-monolog?utm_source=packagist-monolog-monolog&utm_medium=referral&utm_campaign=enterprise) or via [GitHub sponsorship](https://github.com/sponsors/Seldaek).
 
-Mockery ships with some helpers if you are using PHPUnit. You can extend the
-[`Mockery\Adapter\Phpunit\MockeryTestCase`](library/Mockery/Adapter/Phpunit/MockeryTestCase.php)
-class instead of `PHPUnit\Framework\TestCase`, or if you are already using a
-custom base class for your tests, take a look at the traits available in the
-[`Mockery\Adapter\Phpunit`](library/Mockery/Adapter/Phpunit) namespace.
+Tidelift delivers commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use.
 
-## Test Doubles
+## Third Party Packages
 
-Test doubles (often called mocks) simulate the behaviour of real objects. They are
-commonly utilised to offer test isolation, to stand in for objects which do not
-yet exist, or to allow for the exploratory design of class APIs without
-requiring actual implementation up front.
-
-The benefits of a test double framework are to allow for the flexible generation
-and configuration of test doubles. They allow the setting of expected method calls
-and/or return values using a flexible API which is capable of capturing every
-possible real object behaviour in way that is stated as close as possible to a
-natural language description. Use the `Mockery::mock` method to create a test
-double.
+Third party handlers, formatters and processors are
+[listed in the wiki](https://github.com/Seldaek/monolog/wiki/Third-Party-Packages). You
+can also add your own there if you publish one.
 
-``` php
-$double = Mockery::mock();
-```
+## About
 
-If you need Mockery to create a test double to satisfy a particular type hint,
-you can pass the type to the `mock` method.
+### Requirements
 
-``` php
-class Book {}
+- Monolog `^3.0` works with PHP 8.1 or above.
+- Monolog `^2.5` works with PHP 7.2 or above.
+- Monolog `^1.25` works with PHP 5.3 up to 8.1, but is not very maintained anymore and will not receive PHP support fixes anymore.
 
-interface BookRepository {
-    function find($id): Book;
-    function findAll(): array;
-    function add(Book $book): void;
-}
+### Support
 
-$double = Mockery::mock(BookRepository::class);
-```
+Monolog 1.x support is somewhat limited at this point and only important fixes will be done. You should migrate to Monolog 2 or 3 where possible to benefit from all the latest features and fixes.
 
-A detailed explanation of creating and working with test doubles is given in the
-documentation, [Creating test doubles](http://docs.mockery.io/en/latest/reference/creating_test_doubles.html)
-section.
-
-## Method Stubs 🎫
-
-A method stub is a mechanism for having your test double return canned responses
-to certain method calls. With stubs, you don't care how many times, if at all,
-the method is called. Stubs are used to provide indirect input to the system
-under test.
-
-``` php
-$double->allows()->find(123)->andReturns(new Book());
-
-$book = $double->find(123);
-```
-
-If you have used Mockery before, you might see something new in the example
-above &mdash; we created a method stub using `allows`, instead of the "old"
-`shouldReceive` syntax. This is a new feature of Mockery v1, but fear not,
-the trusty ol' `shouldReceive` is still here.
-
-For new users of Mockery, the above example can also be written as:
-
-``` php
-$double->shouldReceive('find')->with(123)->andReturn(new Book());
-$book = $double->find(123);
-```
-
-If your stub doesn't require specific arguments, you can also use this shortcut
-for setting up multiple calls at once:
-
-``` php
-$double->allows([
-    "findAll" => [new Book(), new Book()],
-]);
-```
-
-or
-
-``` php
-$double->shouldReceive('findAll')
-    ->andReturn([new Book(), new Book()]);
-```
-
-You can also use this shortcut, which creates a double and sets up some stubs in
-one call:
-
-``` php
-$double = Mockery::mock(BookRepository::class, [
-    "findAll" => [new Book(), new Book()],
-]);
-```
-
-## Method Call Expectations 📲
-
-A Method call expectation is a mechanism to allow you to verify that a
-particular method has been called. You can specify the parameters and you can
-also specify how many times you expect it to be called. Method call expectations
-are used to verify indirect output of the system under test.
+### Submitting bugs and feature requests
 
-``` php
-$book = new Book();
+Bugs and feature request are tracked on [GitHub](https://github.com/Seldaek/monolog/issues)
 
-$double = Mockery::mock(BookRepository::class);
-$double->expects()->add($book);
-```
+### Framework Integrations
 
-During the test, Mockery accept calls to the `add` method as prescribed.
-After you have finished exercising the system under test, you need to
-tell Mockery to check that the method was called as expected, using the
-`Mockery::close` method. One way to do that is to add it to your `tearDown`
-method in PHPUnit.
+- Frameworks and libraries using [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
+  can be used very easily with Monolog since it implements the interface.
+- [Symfony](http://symfony.com) comes out of the box with Monolog.
+- [Laravel](http://laravel.com/) comes out of the box with Monolog.
+- [Lumen](http://lumen.laravel.com/) comes out of the box with Monolog.
+- [PPI](https://github.com/ppi/framework) comes out of the box with Monolog.
+- [CakePHP](http://cakephp.org/) is usable with Monolog via the [cakephp-monolog](https://github.com/jadb/cakephp-monolog) plugin.
+- [XOOPS 2.6](http://xoops.org/) comes out of the box with Monolog.
+- [Aura.Web_Project](https://github.com/auraphp/Aura.Web_Project) comes out of the box with Monolog.
+- [Nette Framework](http://nette.org/en/) is usable with Monolog via the [contributte/monolog](https://github.com/contributte/monolog) or [orisai/nette-monolog](https://github.com/orisai/nette-monolog) extensions.
+- [Proton Micro Framework](https://github.com/alexbilbie/Proton) comes out of the box with Monolog.
+- [FuelPHP](http://fuelphp.com/) comes out of the box with Monolog.
+- [Equip Framework](https://github.com/equip/framework) comes out of the box with Monolog.
+- [Yii 2](http://www.yiiframework.com/) is usable with Monolog via the [yii2-monolog](https://github.com/merorafael/yii2-monolog) or [yii2-psr-log-target](https://github.com/samdark/yii2-psr-log-target) plugins.
+- [Hawkbit Micro Framework](https://github.com/HawkBitPhp/hawkbit) comes out of the box with Monolog.
+- [SilverStripe 4](https://www.silverstripe.org/) comes out of the box with Monolog.
+- [Drupal](https://www.drupal.org/) is usable with Monolog via the [monolog](https://www.drupal.org/project/monolog) module.
+- [Aimeos ecommerce framework](https://aimeos.org/) is usable with Monolog via the [ai-monolog](https://github.com/aimeos/ai-monolog) extension.
+- [Magento](https://magento.com/) comes out of the box with Monolog.
+- [Spiral Framework](https://spiral.dev) comes out of the box with Monolog bridge.
 
-``` php
+### Author
 
-public function tearDown()
-{
-    Mockery::close();
-}
-```
-
-The `expects()` method automatically sets up an expectation that the method call
-(and matching parameters) is called **once and once only**. You can choose to change
-this if you are expecting more calls.
-
-``` php
-$double->expects()->add($book)->twice();
-```
-
-If you have used Mockery before, you might see something new in the example
-above &mdash; we created a method expectation using `expects`, instead of the "old"
-`shouldReceive` syntax. This is a new feature of Mockery v1, but same as with
-`allows` in the previous section, it can be written in the "old" style.
+Jordi Boggiano - <j.boggiano@seld.be> - <http://twitter.com/seldaek><br />
+See also the list of [contributors](https://github.com/Seldaek/monolog/contributors) who participated in this project.
 
-For new users of Mockery, the above example can also be written as:
+### License
 
-``` php
-$double->shouldReceive('find')
-    ->with(123)
-    ->once()
-    ->andReturn(new Book());
-$book = $double->find(123);
-```
+Monolog is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-A detailed explanation of declaring expectations on method calls, please
-read the documentation, the [Expectation declarations](http://docs.mockery.io/en/latest/reference/expectations.html)
-section. After that, you can also learn about the new `allows` and `expects` methods
-in the [Alternative shouldReceive syntax](http://docs.mockery.io/en/latest/reference/alternative_should_receive_syntax.html)
-section.
+### Acknowledgements
 
-It is worth mentioning that one way of setting up expectations is no better or worse
-than the other. Under the hood, `allows` and `expects` are doing the same thing as
-`shouldReceive`, at times in "less words", and as such it comes to a personal preference
-of the programmer which way to use.
-
-## Test Spies 🕵️
-
-By default, all test doubles created with the `Mockery::mock` method will only
-accept calls that they have been configured to `allow` or `expect` (or in other words,
-calls that they `shouldReceive`). Sometimes we don't necessarily care about all of the
-calls that are going to be made to an object. To facilitate this, we can tell Mockery
-to ignore any calls it has not been told to expect or allow. To do so, we can tell a
-test double `shouldIgnoreMissing`, or we can create the double using the `Mocker::spy`
-shortcut.
-
-``` php
-// $double = Mockery::mock()->shouldIgnoreMissing();
-$double = Mockery::spy();
-
-$double->foo(); // null
-$double->bar(); // null
-```
-
-Further to this, sometimes we want to have the object accept any call during the test execution
-and then verify the calls afterwards. For these purposes, we need our test
-double to act as a Spy. All mockery test doubles record the calls that are made
-to them for verification afterwards by default:
-
-``` php
-$double->baz(123);
-
-$double->shouldHaveReceived()->baz(123); // null
-$double->shouldHaveReceived()->baz(12345); // Uncaught Exception Mockery\Exception\InvalidCountException...
-```
-
-Please refer to the [Spies](http://docs.mockery.io/en/latest/reference/spies.html) section
-of the documentation to learn more about the spies.
-
-## Utilities 🔌
-
-### Global Helpers
-
-Mockery ships with a handful of global helper methods, you just need to ask
-Mockery to declare them.
-
-``` php
-Mockery::globalHelpers();
-
-$mock = mock(Some::class);
-$spy = spy(Some::class);
-
-$spy->shouldHaveReceived()
-    ->foo(anyArgs());
-```
-
-All of the global helpers are wrapped in a `!function_exists` call to avoid
-conflicts. So if you already have a global function called `spy`, Mockery will
-silently skip the declaring its own `spy` function.
-
-### Testing Traits
-
-As Mockery ships with code generation capabilities, it was trivial to add
-functionality allowing users to create objects on the fly that use particular
-traits. Any abstract methods defined by the trait will be created and can have
-expectations or stubs configured like normal Test Doubles.
-
-``` php
-trait Foo {
-    function foo() {
-        return $this->doFoo();
-    }
-
-    abstract function doFoo();
-}
-
-$double = Mockery::mock(Foo::class);
-$double->allows()->doFoo()->andReturns(123);
-$double->foo(); // int(123)
-```
-
-## Versioning
-
-The Mockery team attempts to adhere to [Semantic Versioning](http://semver.org),
-however, some of Mockery's internals are considered private and will be open to
-change at any time. Just because a class isn't final, or a method isn't marked
-private, does not mean it constitutes part of the API we guarantee under the
-versioning scheme.
-
-### Alternative Runtimes
-
-Mockery 1.3 was the last version to support HHVM 3 and PHP 5. There is no support for HHVM 4+.
-
-## A new home for Mockery
-
-⚠️️ Update your remotes! Mockery has transferred to a new location. While it was once
-at `padraic/mockery`, it is now at `mockery/mockery`. While your
-existing repositories will redirect transparently for any operations, take some
-time to transition to the new URL.
-```sh
-$ git remote set-url upstream https://github.com/mockery/mockery.git
-```
-Replace `upstream` with the name of the remote you use locally; `upstream` is commonly
-used but you may be using something else. Run `git remote -v` to see what you're actually
-using.
+This library is heavily inspired by Python's [Logbook](https://logbook.readthedocs.io/en/stable/)
+library, although most concepts have been adjusted to fit to the PHP world.
