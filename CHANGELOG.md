@@ -1,746 +1,419 @@
-# Change Log
+# Changelog
+
 All notable changes to this project will be documented in this file.
-Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-**Upgrading from 1.x?** See <https://commonmark.thephpleague.com/2.0/upgrading/> for additional information.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased][unreleased]
+## [Unreleased]
 
-## [2.7.0]
-
-This is a **security release** to address a potential cross-site scripting (XSS) vulnerability when using the `AttributesExtension` with untrusted user input.
-
-### Added
-- Added `attributes/allow` config option to specify which attributes users are allowed to set on elements (default allows virtually all attributes)
-
-### Changed
-- The `AttributesExtension` blocks all attributes starting with `on` unless explicitly allowed via the `attributes/allow` config option
-- The `allow_unsafe_links` option is now respected by the `AttributesExtension` when users specify `href` and `src` attributes
-
-## [2.6.2] - 2025-04-18
-
-### Fixed
-
-- Fixed Attributes extension parsing regression (#1071)
-
-## [2.6.1] - 2024-12-29
-
-### Fixed
-
-- Rendered list items should only add newlines around block-level children (#1059, #1061)
-
-## [2.6.0] - 2024-12-07
-
-This is a **security release** to address potential denial of service attacks when parsing specially crafted,
-malicious input from untrusted sources (like user input).
-
-### Added
-
-- Added `max_delimiters_per_line` config option to prevent denial of service attacks when parsing malicious input
-- Added `table/max_autocompleted_cells` config option to prevent denial of service attacks when parsing large tables
-- The `AttributesExtension` now supports attributes without values (#985, #986)
-- The `AutolinkExtension` exposes two new configuration options to override the default behavior (#969, #987):
-    - `autolink/allowed_protocols` - an array of protocols to allow autolinking for
-    - `autolink/default_protocol` - the default protocol to use when none is specified
-- Added `RegexHelper::isWhitespace()` method to check if a given character is an ASCII whitespace character
-- Added `CacheableDelimiterProcessorInterface` to ensure linear complexity for dynamic delimiter processing
-- Added `Bracket` delimiter type to optimize bracket parsing
+## [1.6.12] - 2024-05-15
 
 ### Changed
 
-- `[` and `]` are no longer added as `Delimiter` objects on the stack; a new `Bracket` type with its own stack is used instead
-- `UrlAutolinkParser` no longer parses URLs with more than 127 subdomains
-- Expanded reference links can no longer exceed 100kb, or the size of the input document (whichever is greater)
-- Delimiters should always provide a non-null value via `DelimiterInterface::getIndex()`
-  - We'll attempt to infer the index based on surrounding delimiters where possible
-- The `DelimiterStack` now accepts integer positions for any `$stackBottom` argument
-- Several small performance optimizations
-
-## [2.5.3] - 2024-08-16
-
-### Changed
-
-- Made compatible with CommonMark spec 0.31.1, including:
-  - Remove `source`, add `search` to list of recognized block tags
-
-## [2.5.2] - 2024-08-14
-
-### Changed
-
-- Boolean attributes now require an explicit `true` value (#1040)
+- [1420: Update `psalm-baseline.xml` ](https://github.com/mockery/mockery/pull/1420)
+- [1419: Update e2e-test.sh](https://github.com/mockery/mockery/pull/1419)
+- [1413: Upgrade `phar` tools and `phive.xml` configuration](https://github.com/mockery/mockery/pull/1413)
 
 ### Fixed
 
-- Fixed regression where text could be misinterpreted as an attribute (#1040)
+- [1415: Fix mocking anonymous classes](https://github.com/mockery/mockery/pull/1415)
+- [1411: Mocking final classes reports unresolvable type by PHPStan](https://github.com/mockery/mockery/issues/1411)
+- [1410: Fix PHP Doc Comments](https://github.com/mockery/mockery/pull/1410)
 
-## [2.5.1] - 2024-07-24
+### Security
+
+- [1417: Bump `Jinja2` from `3.1.3` to `3.1.4` fix CVE-2024-34064](https://github.com/mockery/mockery/pull/1417)
+- [1412: Bump `idna` from `3.6` to `3.7` fix CVE-2024-3651](https://github.com/mockery/mockery/pull/1412)
+
+## [1.6.11] - 2024-03-21
 
 ### Fixed
 
-- Fixed attribute parsing incorrectly parsing mustache-like syntax (#1035)
-- Fixed incorrect `Table` start line numbers (#1037)
+- [1407: Fix constants map generics doc comments](https://github.com/mockery/mockery/pull/1407)
+- [1406: Fix reserved words used to name a class, interface or trait](https://github.com/mockery/mockery/pull/1406)
+- [1403: Fix regression - partial construction with trait methods](https://github.com/mockery/mockery/pull/1403)
+- [1401: Improve `Mockery::mock()` parameter type compatibility with array typehints](https://github.com/mockery/mockery/pull/1401)
 
-## [2.5.0] - 2024-07-22
+## [1.6.10] - 2024-03-19
 
 ### Added
 
-- The `AttributesExtension` now supports attributes without values (#985, #986)
-- The `AutolinkExtension` exposes two new configuration options to override the default behavior (#969, #987):
-    - `autolink/allowed_protocols` - an array of protocols to allow autolinking for
-    - `autolink/default_protocol` - the default protocol to use when none is specified
-
-### Changed
-
-- Made compatible with CommonMark spec 0.31.0, including:
-    - Allow closing fence to be followed by tabs
-    - Remove restrictive limitation on inline comments
-    - Unicode symbols now treated like punctuation (for purposes of flankingness)
-    - Trailing tabs on the last line of indented code blocks will be excluded
-    - Improved HTML comment matching
-- `Paragraph`s only containing link reference definitions will be kept in the AST until the `Document` is finalized
-    - (These were previously removed immediately after parsing the `Paragraph`)
+- [1398: [PHP 8.4] Fixes for implicit nullability deprecation](https://github.com/mockery/mockery/pull/1398)
 
 ### Fixed
 
-- Fixed list tightness not being determined properly in some edge cases
-- Fixed incorrect ending line numbers for several block types in various scenarios
-- Fixed lowercase inline HTML declarations not being accepted
+- [1397: Fix mock method $args parameter type](https://github.com/mockery/mockery/pull/1397)
+- [1396: Fix `1.6.8` release](https://github.com/mockery/mockery/pull/1396)
 
-## [2.4.4] - 2024-07-22
+## [1.6.9] - 2024-03-12
 
-### Fixed
+- [1394: Revert v1.6.8 release](https://github.com/mockery/mockery/pull/1394)
 
-- Fixed SmartPunct extension changing already-formatted quotation marks (#1030)
+## [1.6.8] - 2024-03-12
 
-## [2.4.3] - 2024-07-22
+- [1393: Changelog v1.6.8](https://github.com/mockery/mockery/pull/1393)
+- [1392: Refactor remaining codebase](https://github.com/mockery/mockery/pull/1392)
+- [1391: Update actions to use Node 20](https://github.com/mockery/mockery/pull/1391)
+- [1390: Update `ReadTheDocs` dependencies](https://github.com/mockery/mockery/pull/1390)
+- [1389: Refactor `library/Mockery/Matcher/*`](https://github.com/mockery/mockery/pull/1389)
+- [1388: Refactor `library/Mockery/Loader/*`](https://github.com/mockery/mockery/pull/1388)
+- [1387: Refactor `library/Mockery/CountValidator/*`](https://github.com/mockery/mockery/pull/1387)
+- [1386: Add PHPUnit 10+ attributes](https://github.com/mockery/mockery/pull/1386)
+- [1385: Update composer dependencies and clean up](https://github.com/mockery/mockery/pull/1385)
+- [1384: Update `psalm-baseline.xml`](https://github.com/mockery/mockery/pull/1384)
+- [1383: Refactor `library/helpers.php`](https://github.com/mockery/mockery/pull/1383)
+- [1382: Refactor `library/Mockery/VerificationExpectation.php`](https://github.com/mockery/mockery/pull/1382)
+- [1381: Refactor `library/Mockery/VerificationDirector.php`](https://github.com/mockery/mockery/pull/1381)
+- [1380: Refactor `library/Mockery/QuickDefinitionsConfiguration.php`](https://github.com/mockery/mockery/pull/1380)
+- [1379: Refactor `library/Mockery/Undefined.php`](https://github.com/mockery/mockery/pull/1379)
+- [1378: Refactor `library/Mockery/Reflector.php`](https://github.com/mockery/mockery/pull/1378)
+- [1377: Refactor `library/Mockery/ReceivedMethodCalls.php`](https://github.com/mockery/mockery/pull/1377)
+- [1376: Refactor `library/Mockery.php`](https://github.com/mockery/mockery/pull/1376)
+- [1375: Refactor `library/Mockery/MockInterface.php`](https://github.com/mockery/mockery/pull/1375)
+- [1374: Refactor `library/Mockery/MethodCall.php`](https://github.com/mockery/mockery/pull/1374)
+- [1373: Refactor `library/Mockery/LegacyMockInterface.php`](https://github.com/mockery/mockery/pull/1373)
+- [1372: Refactor `library/Mockery/Instantiator.php`](https://github.com/mockery/mockery/pull/1372)
+- [1371: Refactor `library/Mockery/HigherOrderMessage.php`](https://github.com/mockery/mockery/pull/1371)
+- [1370: Refactor `library/Mockery/ExpectsHigherOrderMessage.php`](https://github.com/mockery/mockery/pull/1370)
+- [1369: Refactor `library/Mockery/ExpectationInterface.php`](https://github.com/mockery/mockery/pull/1369)
+- [1368: Refactor `library/Mockery/ExpectationDirector.php`](https://github.com/mockery/mockery/pull/1368)
+- [1367: Refactor `library/Mockery/Expectation.php`](https://github.com/mockery/mockery/pull/1367)
+- [1366: Refactor `library/Mockery/Exception.php`](https://github.com/mockery/mockery/pull/1366)
+- [1365: Refactor `library/Mockery/Container.php`](https://github.com/mockery/mockery/pull/1365)
+- [1364: Refactor `library/Mockery/Configuration.php`](https://github.com/mockery/mockery/pull/1364)
+- [1363: Refactor `library/Mockery/CompositeExpectation.php`](https://github.com/mockery/mockery/pull/1363)
+- [1362: Refactor `library/Mockery/ClosureWrapper.php`](https://github.com/mockery/mockery/pull/1362)
+- [1361: Refactor `library/Mockery.php`](https://github.com/mockery/mockery/pull/1361)
+- [1360: Refactor Container](https://github.com/mockery/mockery/pull/1360)
+- [1355: Fix the namespace in the SubsetTest class](https://github.com/mockery/mockery/pull/1355)
+- [1354: Add array-like objects support to hasKey/hasValue matchers](https://github.com/mockery/mockery/pull/1354)
 
-### Fixed
-
-- Fixed the Attributes extension not supporting CSS level 3 selectors (#1013)
-- Fixed `UrlAutolinkParser` incorrectly parsing text containing `www` anywhere before an autolink (#1025)
-
-
-## [2.4.2] - 2024-02-02
-
-### Fixed
-
-- Fixed declaration parser being too strict
-- `FencedCodeRenderer`: don't add `language-` to class if already prefixed
-
-### Deprecated
-
-- Returning dynamic values from `DelimiterProcessorInterface::getDelimiterUse()` is deprecated
-    - You should instead implement `CacheableDelimiterProcessorInterface` to help the engine perform caching to avoid performance issues.
-- Failing to set a delimiter's index (or returning `null` from `DelimiterInterface::getIndex()`) is deprecated and will not be supported in 3.0
-- Deprecated `DelimiterInterface::isActive()` and `DelimiterInterface::setActive()`, as these are no longer used by the engine
-- Deprecated `DelimiterStack::removeEarlierMatches()` and `DelimiterStack::searchByCharacter()`, as these are no longer used by the engine
-- Passing a `DelimiterInterface` as the `$stackBottom` argument to `DelimiterStack::processDelimiters()` or `::removeAll()` is deprecated and will not be supported in 3.0; pass the integer position instead.
-
-### Fixed
-
-- Fixed NUL characters not being replaced in the input
-- Fixed quadratic complexity parsing unclosed inline links
-- Fixed quadratic complexity parsing emphasis and strikethrough delimiters
-- Fixed issue where having 500,000+ delimiters could trigger a [known segmentation fault issue in PHP's garbage collection](https://bugs.php.net/bug.php?id=68606)
-- Fixed quadratic complexity deactivating link openers
-- Fixed quadratic complexity parsing long backtick code spans with no matching closers
-- Fixed catastrophic backtracking when parsing link labels/titles
-
-## [2.4.1] - 2023-08-30
-
-### Fixed
-
-- Fixed `ExternalLinkProcessor` not fully disabling the `rel` attribute when configured to do so (#992)
-
-## [2.4.0] - 2023-03-24
+## [1.6.7] - 2023-12-09
 
 ### Added
 
-- Added generic `CommonMarkException` marker interface for all exceptions thrown by the library
-- Added several new specific exception types implementing that marker interface:
-    - `AlreadyInitializedException`
-    - `InvalidArgumentException`
-    - `IOException`
-    - `LogicException`
-    - `MissingDependencyException`
-    - `NoMatchingRendererException`
-    - `ParserLogicException`
-- Added more configuration options to the Heading Permalinks extension (#939):
-    - `heading_permalink/apply_id_to_heading` - When `true`, the `id` attribute will be applied to the heading element itself instead of the `<a>` tag
-    - `heading_permalink/heading_class` - class to apply to the heading element
-    - `heading_permalink/insert` - now accepts `none` to prevent the creation of the `<a>` link
-- Added new `table/alignment_attributes` configuration option to control how table cell alignment is rendered (#959)
+- [#1338: Support PHPUnit constraints as matchers](https://github.com/mockery/mockery/pull/1338)
+- [#1336: Add factory methods for `IsEqual` and `IsSame` matchers](https://github.com/mockery/mockery/pull/1336)
+
+### Fixed
+
+- [#1346: Fix test namespaces](https://github.com/mockery/mockery/pull/1346)
+- [#1343: Update documentation default theme and build version](https://github.com/mockery/mockery/pull/1343)
+- [#1329: Prevent `shouldNotReceive` from getting overridden by invocation count methods](https://github.com/mockery/mockery/pull/1329)
 
 ### Changed
 
-- Change several thrown exceptions from `RuntimeException` to `LogicException` (or something extending it), including:
-    - `CallbackGenerator`s that fail to set a URL or return an expected value
-    - `MarkdownParser` when deactivating the last block parser or attempting to get an active block parser when they've all been closed
-    - Adding items to an already-initialized `Environment`
-    - Rendering a `Node` when no renderer has been registered for it
-- `HeadingPermalinkProcessor` now throws `InvalidConfigurationException` instead of `RuntimeException` when invalid config values are given.
-- `HtmlElement::setAttribute()` no longer requires the second parameter for boolean attributes
-- Several small micro-optimizations
-- Changed Strikethrough to only allow 1 or 2 tildes per the updated GFM spec
+- [#1351: Update psalm-baseline.xml](https://github.com/mockery/mockery/pull/1351)
+- [#1350: Changelog v1.6.7](https://github.com/mockery/mockery/pull/1350)
+- [#1349: Cleanup](https://github.com/mockery/mockery/pull/1349)
+- [#1348: Update makefile](https://github.com/mockery/mockery/pull/1348)
+- [#1347: Bump phars dependencies](https://github.com/mockery/mockery/pull/1347)
+- [#1344: Disabled travis-ci and sensiolabs webhooks](https://github.com/mockery/mockery/issues/1344)
+- [#1342: Add `.readthedocs.yml` configuration](https://github.com/mockery/mockery/pull/1342)
+- [#1340: docs: Remove misplaced semicolumn from code snippet](https://github.com/mockery/mockery/pull/1340)
+
+## 1.6.6 (2023-08-08)
+
+- [#1327: Changelog v1.6.6](https://github.com/mockery/mockery/pull/1327)
+- [#1325: Keep the file that caused an error for inspection](https://github.com/mockery/mockery/pull/1325)
+- [#1324: Fix Regression - Replace `+` Array Union Operator with `array_merge`](https://github.com/mockery/mockery/pull/1324)
+
+## 1.6.5 (2023-08-05)
+
+- [#1322: Changelog v1.6.5](https://github.com/mockery/mockery/pull/1322)
+- [#1321: Autoload Test Fixtures Based on PHP Runtime Version](https://github.com/mockery/mockery/pull/1321)
+- [#1320: Clean up mocks on destruct](https://github.com/mockery/mockery/pull/1320)
+- [#1318: Fix misspelling in docs](https://github.com/mockery/mockery/pull/1318)
+- [#1316: Fix compatibility issues with PHP 7.3](https://github.com/mockery/mockery/pull/1316)
+- [#1315: Fix PHP 7.3 issues](https://github.com/mockery/mockery/issues/1315)
+- [#1314: Add Security Policy](https://github.com/mockery/mockery/pull/1314)
+- [#1313: Type declaration for `iterable|object`.](https://github.com/mockery/mockery/pull/1313)
+- [#1312: Mock disjunctive normal form types](https://github.com/mockery/mockery/pull/1312)
+- [#1299: Test PHP `8.3` language features](https://github.com/mockery/mockery/pull/1299)
+
+## 1.6.4 (2023-07-19)
+
+- [#1308: Changelog v1.6.4](https://github.com/mockery/mockery/pull/1308)
+- [#1307: Revert `src` to `library` for `1.6.x`](https://github.com/mockery/mockery/pull/1307)
+
+## 1.6.3 (2023-07-18)
+
+- [#1304: Remove `extra.branch-alias` and update composer information](https://github.com/mockery/mockery/pull/1304)
+- [#1303: Update `.gitattributes`](https://github.com/mockery/mockery/pull/1303)
+- [#1302: Changelog v1.6.3](https://github.com/mockery/mockery/pull/1302)
+- [#1301: Fix mocking classes with `new` initializers in method and attribute params on PHP 8.1](https://github.com/mockery/mockery/pull/1301)
+- [#1298: Update default repository branch to latest release branch](https://github.com/mockery/mockery/issues/1298)
+- [#1297: Update `Makefile` for contributors](https://github.com/mockery/mockery/pull/1297)
+- [#1294: Correct return types of Mock for phpstan](https://github.com/mockery/mockery/pull/1294)
+- [#1290: Rename directory `library` to `src`](https://github.com/mockery/mockery/pull/1290)
+- [#1288: Update codecov workflow](https://github.com/mockery/mockery/pull/1288)
+- [#1287: Update psalm configuration and workflow](https://github.com/mockery/mockery/pull/1287)
+- [#1286: Update phpunit workflow](https://github.com/mockery/mockery/pull/1286)
+- [#1285: Enforce the minimum required PHP version](https://github.com/mockery/mockery/pull/1285)
+- [#1283: Update license and copyright information](https://github.com/mockery/mockery/pull/1283)
+- [#1282: Create `COPYRIGHT.md` file](https://github.com/mockery/mockery/pull/1282)
+- [#1279: Bump `vimeo/psalm` from `5.9.0` to `5.12.0`](https://github.com/mockery/mockery/pull/1279)
+
+## 1.6.2 (2023-06-07)
+
+- [#1276: Add `IsEqual` Argument Matcher](https://github.com/mockery/mockery/pull/1276)
+- [#1275: Add `IsSame` Argument Matcher](https://github.com/mockery/mockery/pull/1275)
+- [#1274: Update composer branch alias](https://github.com/mockery/mockery/pull/1274)
+- [#1271: Support PHP 8.2 `true` Literal Type](https://github.com/mockery/mockery/pull/1271)
+- [#1270: Support PHP 8.0 `false` Literal Type](https://github.com/mockery/mockery/pull/1270)
+
+## 1.6.1 (2023-06-05)
+
+- [#1267 Drops support for PHP <7.4](https://github.com/mockery/mockery/pull/1267)
+- [#1192 Updated changelog for version 1.5.1 to include changes from #1180](https://github.com/mockery/mockery/pull/1192)
+- [#1196 Update example in README.md](https://github.com/mockery/mockery/pull/1196)
+- [#1199 Fix function parameter default enum value](https://github.com/mockery/mockery/pull/1199)
+- [#1205 Deal with null type in PHP8.2](https://github.com/mockery/mockery/pull/1205)
+- [#1208 Import MockeryTestCase fully qualified class name](https://github.com/mockery/mockery/pull/1208)
+- [#1210 Add support for target class attributes](https://github.com/mockery/mockery/pull/1210)
+- [#1212 docs: Add missing comma](https://github.com/mockery/mockery/pull/1212)
+- [#1216 Fixes code generation for intersection types](https://github.com/mockery/mockery/pull/1216)
+- [#1217 Add MockeryExceptionInterface](https://github.com/mockery/mockery/pull/1217)
+- [#1218 tidy: avoids require](https://github.com/mockery/mockery/pull/1218)
+- [#1222 Add .editorconfig](https://github.com/mockery/mockery/pull/1222)
+- [#1225 Switch to PSR-4 autoload](https://github.com/mockery/mockery/pull/1225)
+- [#1226 Refactoring risky tests](https://github.com/mockery/mockery/pull/1226)
+- [#1230 Add vimeo/psalm and psalm/plugin-phpunit](https://github.com/mockery/mockery/pull/1230)
+- [#1232 Split PHPUnit TestSuites for PHP 8.2](https://github.com/mockery/mockery/pull/1232)
+- [#1233 Bump actions/checkout to v3](https://github.com/mockery/mockery/pull/1233)
+- [#1234 Bump nick-invision/retry to v2](https://github.com/mockery/mockery/pull/1234)
+- [#1235 Setup Codecov for code coverage](https://github.com/mockery/mockery/pull/1235)
+- [#1236 Add Psalm CI Check](https://github.com/mockery/mockery/pull/1236)
+- [#1237 Unignore composer.lock file](https://github.com/mockery/mockery/pull/1237)
+- [#1239 Prevent CI run duplication](https://github.com/mockery/mockery/pull/1239)
+- [#1241 Add PHPUnit workflow for PHP 8.3](https://github.com/mockery/mockery/pull/1241)
+- [#1244 Improve ClassAttributesPass for Dynamic Properties](https://github.com/mockery/mockery/pull/1244)
+- [#1245 Deprecate hamcrest/hamcrest-php package](https://github.com/mockery/mockery/pull/1245)
+- [#1246 Add BUG_REPORT.yml Issue template](https://github.com/mockery/mockery/pull/1246)
+- [#1250 Deprecate PHP <=8.0](https://github.com/mockery/mockery/issues/1250)
+- [#1253 Prevent array to string conversion when serialising a Subset matcher](https://github.com/mockery/mockery/issues/1253)
+
+## 1.6.0 (2023-06-05) [DELETED]
+
+This tag was deleted due to a mistake with the composer.json PHP version
+constraint, see [#1266](https://github.com/mockery/mockery/issues/1266)
+
+## 1.3.6 (2022-09-07)
+
+- PHP 8.2 | Fix "Use of "parent" in callables is deprecated" notice #1169
+
+## 1.5.1 (2022-09-07)
+
+- [PHP 8.2] Various tests: explicitly declare properties #1170
+- [PHP 8.2] Fix "Use of "parent" in callables is deprecated" notice #1169
+- [PHP 8.1] Support intersection types #1164
+- Handle final `__toString` methods #1162
+- Only count assertions on expectations which can fail a test #1180
 
-### Fixed
+## 1.5.0 (2022-01-20)
 
-- Fixed inaccurate `@throws` docblocks throughout the codebase, including `ConverterInterface`, `MarkdownConverter`, and `MarkdownConverterInterface`.
-    - These previously suggested that only `\RuntimeException`s were thrown, which was inaccurate as `\LogicException`s were also possible.
+- Override default call count expectations via expects() #1146
+- Mock methods with static return types #1157
+- Mock methods with mixed return type #1156
+- Mock classes with new in initializers on PHP 8.1 #1160
+- Removes redundant PHPUnitConstraint #1158
 
-## [2.3.9] - 2023-02-15
+## 1.4.4 (2021-09-13)
 
-### Fixed
+- Fixes auto-generated return values #1144
+- Adds support for tentative types #1130
+- Fixes for PHP 8.1 Support (#1130 and #1140)
+- Add method that allows defining a set of arguments the mock should yield #1133
+- Added option to configure default matchers for objects `\Mockery::getConfiguration()->setDefaultMatcher($class, $matcherClass)` #1120
 
-- Fixed autolink extension not detecting some URIs with underscores (#956)
+## 1.3.5 (2021-09-13)
 
-## [2.3.8] - 2022-12-10
+- Fix auto-generated return values with union types #1143
+- Adds support for tentative types #1130
+- Fixes for PHP 8.1 Support (#1130 and #1140)
+- Add method that allows defining a set of arguments the mock should yield #1133
+- Added option to configure default matchers for objects `\Mockery::getConfiguration()->setDefaultMatcher($class, $matcherClass)` #1120
 
-### Fixed
+## 1.4.3 (2021-02-24)
 
-- Fixed parsing issues when `mb_internal_encoding()` is set to something other than `UTF-8` (#951)
+- Fixes calls to fetchMock before initialisation #1113
+- Allow shouldIgnoreMissing() to behave in a recursive fashion #1097
+- Custom object formatters #766 (Needs Docs)
+- Fix crash on a union type including null #1106
 
-## [2.3.7] - 2022-11-03
+## 1.3.4 (2021-02-24)
 
-### Fixed
+- Fixes calls to fetchMock before initialisation #1113
+- Fix crash on a union type including null #1106
 
-- Fixed `TaskListItemMarkerRenderer` not including HTML attributes set on the node by other extensions (#947)
+## 1.4.2 (2020-08-11)
 
-## [2.3.6] - 2022-10-30
+- Fix array to string conversion in ConstantsPass (#1086)
+- Fixed nullable PHP 8.0 union types (#1088, #1089)
+- Fixed support for PHP 8.0 parent type (#1088, #1089)
+- Fixed PHP 8.0 mixed type support (#1088, #1089)
+- Fixed PHP 8.0 union return types (#1088, #1089)
 
-### Fixed
+## 1.4.1 (2020-07-09)
 
-- Fixed unquoted attribute parsing when closing curly brace is followed by certain characters (like a `.`) (#943)
-
-## [2.3.5] - 2022-07-29
-
-### Fixed
-
-- Fixed error using `InlineParserEngine` when no inline parsers are registered in the `Environment` (#908)
-
-## [2.3.4] - 2022-07-17
-
-### Changed
-
-- Made a number of small tweaks to the embed extension's parsing behavior to fix #898:
-    - Changed `EmbedStartParser` to always capture embed-like lines in container blocks, regardless of parent block type
-    - Changed `EmbedProcessor` to also remove `Embed` blocks that aren't direct children of the `Document`
-    - Increased the priority of `EmbedProcessor` to `1010`
-
-### Fixed
-
-- Fixed `EmbedExtension` not parsing embeds following a list block (#898)
-
-## [2.3.3] - 2022-06-07
-
-### Fixed
-
-- Fixed `DomainFilteringAdapter` not reindexing the embed list (#884, #885)
-
-## [2.3.2] - 2022-06-03
-
-### Fixed
-
-- Fixed FootnoteExtension stripping extra characters from tab-indented footnotes (#881)
-
-## [2.2.5] - 2022-06-03
-
-### Fixed
-
-- Fixed FootnoteExtension stripping extra characters from tab-indented footnotes (#881)
-
-## [2.3.1] - 2022-05-14
-
-### Fixed
-
-- Fixed AutolinkExtension not ignoring trailing strikethrough syntax (#867)
-
-## [2.2.4] - 2022-05-14
-
-### Fixed
-
-- Fixed AutolinkExtension not ignoring trailing strikethrough syntax (#867)
-
-## [2.3.0] - 2022-04-07
-
-### Added
-
-- Added new `EmbedExtension` (#805)
-- Added `DocumentRendererInterface` as a replacement for the now-deprecated `MarkdownRendererInterface`
-
-### Deprecated
-
-- Deprecated `MarkdownRendererInterface`; use `DocumentRendererInterface` instead
-
-## [2.2.3] - 2022-02-26
-
-### Fixed
-
-- Fixed front matter parsing with Windows line endings (#821)
-
-## [2.1.3] - 2022-02-26
-
-### Fixed
-
-- Fixed front matter parsing with Windows line endings (#821)
-
-## [2.0.4] - 2022-02-26
-
-### Fixed
-
-- Fixed front matter parsing with Windows line endings (#821)
-
-## [2.2.2] - 2022-02-13
-
-### Fixed
-
-- Fixed double-escaping of image alt text (#806, #810)
-- Fixed Psalm typehints for event class names
-
-## [2.2.1] - 2022-01-25
-
-### Fixed
-
- - Fixed `symfony/deprecation-contracts` constraint
-
-### Removed
-
- - Removed deprecation trigger from `MarkdownConverterInterface` to reduce noise
-
-## [2.2.0] - 2022-01-22
-
-### Added
-
- - Added new `ConverterInterface`
- - Added new `MarkdownToXmlConverter` class
- - Added new `HtmlDecorator` class which can wrap existing renderers with additional HTML tags
- - Added new `table/wrap` config to apply an optional wrapping/container element around a table (#780)
-
-### Changed
-
- - `HtmlElement` contents can now consist of any `Stringable`, not just `HtmlElement` and `string`
-
-### Deprecated
-
- - Deprecated `MarkdownConverterInterface` and its `convertToHtml()` method; use `ConverterInterface` and `convert()` instead
-
-## [2.1.2] - 2022-02-13
-
-### Fixed
-
-- Fixed double-escaping of image alt text (#806, #810)
-- Fixed Psalm typehints for event class names
-
-## [2.1.1] - 2022-01-02
-
-### Added
-
- - Added missing return type to `Environment::dispatch()` to fix deprecation warning (#778)
-
-## [2.1.0] - 2021-12-05
-
-### Added
-
-- Added support for ext-yaml in FrontMatterExtension (#715)
-- Added support for symfony/yaml v6.0 in FrontMatterExtension (#739)
-- Added new `heading_permalink/aria_hidden` config option (#741)
-
-### Fixed
-
- - Fixed PHP 8.1 deprecation warning (#759, #762)
-
-## [2.0.3] - 2022-02-13
-
-### Fixed
-
-- Fixed double-escaping of image alt text (#806, #810)
-- Fixed Psalm typehints for event class names
-
-## [2.0.2] - 2021-08-14
-
-### Changed
-
-- Bumped minimum version of league/config to support PHP 8.1
-
-### Fixed
-
-- Fixed ability to register block parsers that identify lines starting with letters (#706)
-
-## [2.0.1] - 2021-07-31
-
-### Fixed
-
-- Fixed nested autolinks (#689)
-- Fixed description lists being parsed incorrectly (#692)
-- Fixed Table of Contents not respecting Heading Permalink prefixes (#690)
-
-## [2.0.0] - 2021-07-24
-
-No changes were introduced since the previous RC2 release.
-See all entries below for a list of changes between 1.x and 2.0.
-
-## [2.0.0-rc2] - 2021-07-17
-
-### Fixed
-
-- Fixed Mentions inside of links creating nested links against the spec's rules (#688)
-
-## [2.0.0-rc1] - 2021-07-10
-
-No changes were introduced since the previous release.
-
-## [2.0.0-beta3] - 2021-07-03
-
-### Changed
-
- - Any leading UTF-8 BOM will be stripped from the input
- - The `getEnvironment()` method of `CommonMarkConverter` and `GithubFlavoredMarkdownConverter` will always return the concrete, configurable `Environment` for upgrading convenience
- - Optimized AST iteration
- - Lots of small micro-optimizations
-
-## [2.0.0-beta2] - 2021-06-27
-
-### Added
-
-- Added new `Node::iterator()` method and `NodeIterator` class for faster AST iteration (#683, #684)
-
-### Changed
-
-- Made compatible with CommonMark spec 0.30.0
-- Optimized link label parsing
-- Optimized AST iteration for a 50% performance boost in some event listeners (#683, #684)
-
-### Fixed
-
-- Fixed processing instructions with EOLs
-- Fixed case-insensitive matching for HTML tag types
-- Fixed type 7 HTML blocks incorrectly interrupting lazy paragraphs
-- Fixed newlines in reference labels not collapsing into spaces
-- Fixed link label normalization with escaped newlines
-- Fixed unnecessary AST iteration when no default attributes are configured
-
-## [2.0.0-beta1] - 2021-06-20
-
-### Added
-
- - **Added three new extensions:**
-   - `FrontMatterExtension` ([see documentation](https://commonmark.thephpleague.com/extensions/front-matter/))
-   - `DescriptionListExtension` ([see documentation](https://commonmark.thephpleague.com/extensions/description-lists/))
-   - `DefaultAttributesExtension` ([see documentation](https://commonmark.thephpleague.com/extensions/default-attributes/))
- - **Added new `XmlRenderer` to simplify AST debugging** ([see documentation](https://commonmark.thephpleague.com/xml/)) (#431)
- - **Added the ability to configure disallowed raw HTML tags** (#507)
- - **Added the ability for Mentions to use multiple characters for their symbol** (#514, #550)
- - **Added the ability to delegate event dispatching to PSR-14 compliant event dispatcher libraries**
- - **Added new configuration options:**
-   - Added `heading_permalink/min_heading_level` and `heading_permalink/max_heading_level` options to control which headings get permalinks (#519)
-   - Added `heading_permalink/fragment_prefix` to allow customizing the URL fragment prefix (#602)
-   - Added `footnote/backref_symbol` option for customizing backreference link appearance (#522)
-   - Added `slug_normalizer/max_length` option to control the maximum length of generated URL slugs
-   - Added `slug_normalizer/unique` option to control whether unique slugs should be generated per-document or per-environment
- - **Added purity markers throughout the codebase** (verified with Psalm)
- - Added `Query` class to simplify Node traversal when looking to take action on certain Nodes
- - Added new `HtmlFilter` and `StringContainerHelper` utility classes
- - Added new `AbstractBlockContinueParser` class to simplify the creation of custom block parsers
- - Added several new classes and interfaces:
-   - `BlockContinue`
-   - `BlockContinueParserInterface`
-   - `BlockContinueParserWithInlinesInterface`
-   - `BlockStart`
-   - `BlockStartParserInterface`
-   - `ChildNodeRendererInterface`
-   - `ConfigurableExtensionInterface`
-   - `CursorState`
-   - `DashParser` (extracted from `PunctuationParser`)
-   - `DelimiterParser`
-   - `DocumentBlockParser`
-   - `DocumentPreRenderEvent`
-   - `DocumentRenderedEvent`
-   - `EllipsesParser` (extracted from `PunctuationParser`)
-   - `ExpressionInterface`
-   - `FallbackNodeXmlRenderer`
-   - `InlineParserEngineInterface`
-   - `InlineParserMatch`
-   - `MarkdownParserState`
-   - `MarkdownParserStateInterface`
-   - `MarkdownRendererInterface`
-   - `Query`
-   - `RawMarkupContainerInterface`
-   - `ReferenceableInterface`
-   - `RenderedContent`
-   - `RenderedContentInterface`
-   - `ReplaceUnpairedQuotesListener`
-   - `SpecReader`
-   - `TableOfContentsRenderer`
-   - `UniqueSlugNormalizer`
-   - `UniqueSlugNormalizerInterface`
-   - `XmlRenderer`
-   - `XmlNodeRendererInterface`
- - Added several new methods:
-   - `Cursor::getCurrentCharacter()`
-   - `Environment::createDefaultConfiguration()`
-   - `Environment::setEventDispatcher()`
-   - `EnvironmentInterface::getExtensions()`
-   - `EnvironmentInterface::getInlineParsers()`
-   - `EnvironmentInterface::getSlugNormalizer()`
-   - `FencedCode::setInfo()`
-   - `Heading::setLevel()`
-   - `HtmlRenderer::renderDocument()`
-   - `InlineParserContext::getFullMatch()`
-   - `InlineParserContext::getFullMatchLength()`
-   - `InlineParserContext::getMatches()`
-   - `InlineParserContext::getSubMatches()`
-   - `LinkParserHelper::parsePartialLinkLabel()`
-   - `LinkParserHelper::parsePartialLinkTitle()`
-   - `Node::assertInstanceOf()`
-   - `RegexHelper::isLetter()`
-   - `StringContainerInterface::setLiteral()`
-   - `TableCell::getType()`
-   - `TableCell::setType()`
-   - `TableCell::getAlign()`
-   - `TableCell::setAlign()`
-
-### Changed
-
- - **Changed the converter return type**
-   - `CommonMarkConverter::convertToHtml()` now returns an instance of `RenderedContentInterface`. This can be cast to a string for backward compatibility with 1.x.
- - **Table of Contents items are no longer wrapped with `<p>` tags** (#613)
- - **Heading Permalinks now link to element IDs instead of using `name` attributes** (#602)
- - **Heading Permalink IDs and URL fragments now have a `content` prefix by default** (#602)
- - **Changes to configuration options:**
-     - `enable_em` has been renamed to `commonmark/enable_em`
-     - `enable_strong` has been renamed to `commonmark/enable_strong`
-     - `use_asterisk` has been renamed to `commonmark/use_asterisk`
-     - `use_underscore` has been renamed to `commonmark/use_underscore`
-     - `unordered_list_markers` has been renamed to `commonmark/unordered_list_markers`
-     - `mentions/*/symbol` has been renamed to `mentions/*/prefix`
-     - `mentions/*/regex` has been renamed to `mentions/*/pattern` and requires partial regular expressions (without delimiters or flags)
-     - `max_nesting_level` now defaults to `PHP_INT_MAX` and no longer supports floats
-     - `heading_permalink/slug_normalizer` has been renamed to `slug_normalizer/instance`
- - **Event dispatching is now fully PSR-14 compliant**
- - **Moved and renamed several classes** - [see the full list here](https://commonmark.thephpleague.com/2.0/upgrading/#classesnamespaces-renamed)
- - The `HeadingPermalinkExtension` and `FootnoteExtension` were modified to ensure they never produce a slug which conflicts with slugs created by the other extension
- - `SlugNormalizer::normalizer()` now supports optional prefixes and max length options passed in via the `$context` argument
- - The `AbstractBlock::$data` and `AbstractInline::$data` arrays were replaced with a `Data` array-like object on the base `Node` class
- - **Implemented a new approach to block parsing.** This was a massive change, so here are the highlights:
-   - Functionality previously found in block parsers and node elements has moved to block parser factories and block parsers, respectively ([more details](https://commonmark.thephpleague.com/2.0/upgrading/#new-block-parsing-approach))
-   - `ConfigurableEnvironmentInterface::addBlockParser()` is now `EnvironmentBuilderInterface::addBlockParserFactory()`
-   - `ReferenceParser` was re-implemented and works completely different than before
-   - The paragraph parser no longer needs to be added manually to the environment
- - **Implemented a new approach to inline parsing** where parsers can now specify longer strings or regular expressions they want to parse (instead of just single characters):
-   - `InlineParserInterface::getCharacters()` is now `getMatchDefinition()` and returns an instance of `InlineParserMatch`
-   - `InlineParserContext::__construct()` now requires the contents to be provided as a `Cursor` instead of a `string`
- - **Implemented delimiter parsing as a special type of inline parser** (via the new `DelimiterParser` class)
- - **Changed block and inline rendering to use common methods and interfaces**
-   - `BlockRendererInterface` and `InlineRendererInterface` were replaced by `NodeRendererInterface` with slightly different parameters. All core renderers now implement this interface.
-   - `ConfigurableEnvironmentInterface::addBlockRenderer()` and `addInlineRenderer()` were combined into `EnvironmentBuilderInterface::addRenderer()`
-   - `EnvironmentInterface::getBlockRenderersForClass()` and `getInlineRenderersForClass()` are now just `getRenderersForClass()`
- - **Completely refactored the Configuration implementation**
-   - All configuration-specific classes have been moved into a new `league/config` package with a new namespace
-   - `Configuration` objects must now be configured with a schema and all options must match that schema - arbitrary keys are no longer permitted
-   - `Configuration::__construct()` no longer accepts the default configuration values - use `Configuration::merge()` instead
-   - `ConfigurationInterface` now only contains a `get(string $key)`; this method no longer allows arbitrary default values to be returned if the option is missing
-   - `ConfigurableEnvironmentInterface` was renamed to `EnvironmentBuilderInterface`
-   - `ExtensionInterface::register()` now requires an `EnvironmentBuilderInterface` param instead of `ConfigurableEnvironmentInterface`
- - **Added missing return types to virtually every class and interface method**
- - Re-implemented the GFM Autolink extension using the new inline parser approach instead of document processors
-   - `EmailAutolinkProcessor` is now `EmailAutolinkParser`
-   - `UrlAutolinkProcessor` is now `UrlAutolinkParser`
- - `HtmlElement` can now properly handle array (i.e. `class`) and boolean (i.e. `checked`) attribute values
- - `HtmlElement` automatically flattens any attributes with array values into space-separated strings, removing duplicate entries
- - Combined separate classes/interfaces into one:
-   - `DisallowedRawHtmlRenderer` replaces `DisallowedRawHtmlBlockRenderer` and `DisallowedRawHtmlInlineRenderer`
-   - `NodeRendererInterface` replaces `BlockRendererInterface` and `InlineRendererInterface`
- - Renamed the following methods:
-   - `Environment` and `ConfigurableEnvironmentInterface`:
-     - `addBlockParser()` is now `addBlockStartParser()`
-   - `ReferenceMap` and `ReferenceMapInterface`:
-     - `addReference()` is now `add()`
-     - `getReference()` is now `get()`
-     - `listReferences()` is now `getIterator()`
-   - Various node (block/inline) classes:
-     - `getContent()` is now `getLiteral()`
-     - `setContent()` is now `setLiteral()`
- - Moved and renamed the following constants:
-   - `EnvironmentInterface::HTML_INPUT_ALLOW` is now `HtmlFilter::ALLOW`
-   - `EnvironmentInterface::HTML_INPUT_ESCAPE` is now `HtmlFilter::ESCAPE`
-   - `EnvironmentInterface::HTML_INPUT_STRIP` is now `HtmlFilter::STRIP`
-   - `TableCell::TYPE_HEAD` is now `TableCell::TYPE_HEADER`
-   - `TableCell::TYPE_BODY` is now `TableCell::TYPE_DATA`
- - Changed the visibility of the following properties:
-   - `AttributesInline::$attributes` is now `private`
-   - `AttributesInline::$block` is now `private`
-   - `TableCell::$align` is now `private`
-   - `TableCell::$type` is now `private`
-   - `TableSection::$type` is now `private`
- - Several methods which previously returned `$this` now return `void`
-   - `Delimiter::setPrevious()`
-   - `Node::replaceChildren()`
-   - `Context::setTip()`
-   - `Context::setContainer()`
-   - `Context::setBlocksParsed()`
-   - `AbstractStringContainer::setContent()`
-   - `AbstractWebResource::setUrl()`
- - Several classes are now marked `final`:
-   - `ArrayCollection`
-   - `Emphasis`
-   - `FencedCode`
-   - `Heading`
-   - `HtmlBlock`
-   - `HtmlElement`
-   - `HtmlInline`
-   - `IndentedCode`
-   - `Newline`
-   - `Strikethrough`
-   - `Strong`
-   - `Text`
- - `Heading` nodes no longer directly contain a copy of their inner text
- - `StringContainerInterface` can now be used for inlines, not just blocks
- - `ArrayCollection` only supports integer keys
- - `HtmlElement` now implements `Stringable`
- - `Cursor::saveState()` and `Cursor::restoreState()` now use `CursorState` objects instead of arrays
- - `NodeWalker::next()` now enters, traverses any children, and leaves all elements which may have children (basically all blocks plus any inlines with children). Previously, it only did this for elements explicitly marked as "containers".
- - `InvalidOptionException` was removed
- - Anything with a `getReference(): ReferenceInterface` method now implements `ReferencableInterface`
- - The `SmartPunct` extension now replaces all unpaired `Quote` elements with `Text` elements towards the end of parsing, making the `QuoteRenderer` unnecessary
- - Several changes made to the Footnote extension:
-   - Footnote identifiers can no longer contain spaces
-   - Anonymous footnotes can now span subsequent lines
-   - Footnotes can now contain multiple lines of content, including sub-blocks, by indenting them
-   - Footnote event listeners now have numbered priorities (but still execute in the same order)
-   - Footnotes must now be separated from previous content by a blank line
- - The line numbers (keys) returned via `MarkdownInput::getLines()` now start at 1 instead of 0
- - `DelimiterProcessorCollectionInterface` now extends `Countable`
- - `RegexHelper::PARTIAL_` constants must always be used in case-insensitive contexts
- - `HeadingPermalinkProcessor` no longer accepts text normalizers via the constructor - these must be provided via configuration instead
- - Blocks which can't contain inlines will no longer be asked to render inlines
- - `AnonymousFootnoteRefParser` and `HeadingPermalinkProcessor` now implement `EnvironmentAwareInterface` instead of `ConfigurationAwareInterface`
- - The second argument to `TextNormalizerInterface::normalize()` must now be an array
- - The `title` attribute for `Link` and `Image` nodes is now stored using a dedicated property instead of stashing it in `$data`
- - `ListData::$delimiter` now returns either `ListBlock::DELIM_PERIOD` or `ListBlock::DELIM_PAREN` instead of the literal delimiter
-
-### Fixed
-
- - **Fixed parsing of footnotes without content**
- - **Fixed rendering of orphaned footnotes and footnote refs**
- - **Fixed some URL autolinks breaking too early** (#492)
- - Fixed `AbstractStringContainer` not actually being `abstract`
-
-### Removed
-
- - **Removed support for PHP 7.1, 7.2, and 7.3** (#625, #671)
- - **Removed all previously-deprecated functionality:**
-   - Removed the ability to pass custom `Environment` instances into the `CommonMarkConverter` and `GithubFlavoredMarkdownConverter` constructors
-   - Removed the `Converter` class and `ConverterInterface`
-   - Removed the `bin/commonmark` script
-   - Removed the `Html5Entities` utility class
-   - Removed the `InlineMentionParser` (use `MentionParser` instead)
-   - Removed `DefaultSlugGenerator` and `SlugGeneratorInterface` from the `Extension/HeadingPermalink/Slug` sub-namespace (use the new ones under `./SlugGenerator` instead)
-   - Removed the following `ArrayCollection` methods:
-     - `add()`
-     - `set()`
-     - `get()`
-     - `remove()`
-     - `isEmpty()`
-     - `contains()`
-     - `indexOf()`
-     - `containsKey()`
-     - `replaceWith()`
-     - `removeGaps()`
-   - Removed the `ConfigurableEnvironmentInterface::setConfig()` method
-   - Removed the `ListBlock::TYPE_UNORDERED` constant
-   - Removed the `CommonMarkConverter::VERSION` constant
-   - Removed the `HeadingPermalinkRenderer::DEFAULT_INNER_CONTENTS` constant
-   - Removed the `heading_permalink/inner_contents` configuration option
- - **Removed now-unused classes:**
-   - `AbstractStringContainerBlock`
-   - `BlockRendererInterface`
-   - `Context`
-   - `ContextInterface`
-   - `Converter`
-   - `ConverterInterface`
-   - `InlineRendererInterface`
-   - `PunctuationParser` (was split into two classes: `DashParser` and `EllipsesParser`)
-   - `QuoteRenderer`
-   - `UnmatchedBlockCloser`
- - Removed the following methods, properties, and constants:
-   - `AbstractBlock::$open`
-   - `AbstractBlock::$lastLineBlank`
-   - `AbstractBlock::isContainer()`
-   - `AbstractBlock::canContain()`
-   - `AbstractBlock::isCode()`
-   - `AbstractBlock::matchesNextLine()`
-   - `AbstractBlock::endsWithBlankLine()`
-   - `AbstractBlock::setLastLineBlank()`
-   - `AbstractBlock::shouldLastLineBeBlank()`
-   - `AbstractBlock::isOpen()`
-   - `AbstractBlock::finalize()`
-   - `AbstractBlock::getData()`
-   - `AbstractInline::getData()`
-   - `ConfigurableEnvironmentInterface::addBlockParser()`
-   - `ConfigurableEnvironmentInterface::mergeConfig()`
-   - `Delimiter::setCanClose()`
-   - `EnvironmentInterface::getConfig()`
-   - `EnvironmentInterface::getInlineParsersForCharacter()`
-   - `EnvironmentInterface::getInlineParserCharacterRegex()`
-   - `HtmlRenderer::renderBlock()`
-   - `HtmlRenderer::renderBlocks()`
-   - `HtmlRenderer::renderInline()`
-   - `HtmlRenderer::renderInlines()`
-   - `Node::isContainer()`
-   - `RegexHelper::matchAll()` (use the new `matchFirst()` method instead)
-   - `RegexHelper::REGEX_WHITESPACE`
- - Removed the second `$contents` argument from the `Heading` constructor
-
-### Deprecated
-
-**The following things have been deprecated and will not be supported in v3.0:**
-
- - `Environment::mergeConfig()` (set configuration before instantiation instead)
- - `Environment::createCommonMarkEnvironment()` and `Environment::createGFMEnvironment()`
-    - Alternative 1: Use `CommonMarkConverter` or `GithubFlavoredMarkdownConverter` if you don't need to customize the environment
-    - Alternative 2: Instantiate a new `Environment` and add the necessary extensions yourself
-
-[unreleased]: https://github.com/thephpleague/commonmark/compare/2.7.0...HEAD
-[2.7.0]: https://github.com/thephpleague/commonmark/compare/2.6.2...2.7.0
-[2.6.2]: https://github.com/thephpleague/commonmark/compare/2.6.1...2.6.2
-[2.6.1]: https://github.com/thephpleague/commonmark/compare/2.6.0...2.6.1
-[2.6.0]: https://github.com/thephpleague/commonmark/compare/2.5.3...2.6.0
-[2.5.3]: https://github.com/thephpleague/commonmark/compare/2.5.2...2.5.3
-[2.5.2]: https://github.com/thephpleague/commonmark/compare/2.5.1...2.5.2
-[2.5.1]: https://github.com/thephpleague/commonmark/compare/2.5.0...2.5.1
-[2.5.0]: https://github.com/thephpleague/commonmark/compare/2.4.4...2.5.0
-[2.4.4]: https://github.com/thephpleague/commonmark/compare/2.4.3...2.4.4
-[2.4.3]: https://github.com/thephpleague/commonmark/compare/2.4.2...2.4.3
-[2.4.2]: https://github.com/thephpleague/commonmark/compare/2.4.1...2.4.2
-[2.4.1]: https://github.com/thephpleague/commonmark/compare/2.4.0...2.4.1
-[2.4.0]: https://github.com/thephpleague/commonmark/compare/2.3.9...2.4.0
-[2.3.9]: https://github.com/thephpleague/commonmark/compare/2.3.8...2.3.9
-[2.3.8]: https://github.com/thephpleague/commonmark/compare/2.3.7...2.3.8
-[2.3.7]: https://github.com/thephpleague/commonmark/compare/2.3.6...2.3.7
-[2.3.6]: https://github.com/thephpleague/commonmark/compare/2.3.5...2.3.6
-[2.3.5]: https://github.com/thephpleague/commonmark/compare/2.3.4...2.3.5
-[2.3.4]: https://github.com/thephpleague/commonmark/compare/2.3.3...2.3.4
-[2.3.3]: https://github.com/thephpleague/commonmark/compare/2.3.2...2.3.3
-[2.3.2]: https://github.com/thephpleague/commonmark/compare/2.3.2...main
-[2.3.1]: https://github.com/thephpleague/commonmark/compare/2.3.0...2.3.1
-[2.3.0]: https://github.com/thephpleague/commonmark/compare/2.2.3...2.3.0
-[2.2.5]: https://github.com/thephpleague/commonmark/compare/2.2.4...2.2.5
-[2.2.4]: https://github.com/thephpleague/commonmark/compare/2.2.3...2.2.4
-[2.2.3]: https://github.com/thephpleague/commonmark/compare/2.2.2...2.2.3
-[2.2.2]: https://github.com/thephpleague/commonmark/compare/2.2.1...2.2.2
-[2.2.1]: https://github.com/thephpleague/commonmark/compare/2.2.0...2.2.1
-[2.2.0]: https://github.com/thephpleague/commonmark/compare/2.1.1...2.2.0
-[2.1.3]: https://github.com/thephpleague/commonmark/compare/2.1.2...2.1.3
-[2.1.2]: https://github.com/thephpleague/commonmark/compare/2.1.1...2.1.2
-[2.1.1]: https://github.com/thephpleague/commonmark/compare/2.0.2...2.1.1
-[2.1.0]: https://github.com/thephpleague/commonmark/compare/2.0.2...2.1.0
-[2.0.4]: https://github.com/thephpleague/commonmark/compare/2.0.3...2.0.4
-[2.0.3]: https://github.com/thephpleague/commonmark/compare/2.0.2...2.0.3
-[2.0.2]: https://github.com/thephpleague/commonmark/compare/2.0.1...2.0.2
-[2.0.1]: https://github.com/thephpleague/commonmark/compare/2.0.0...2.0.1
-[2.0.0]: https://github.com/thephpleague/commonmark/compare/2.0.0-rc2...2.0.0
-[2.0.0-rc2]: https://github.com/thephpleague/commonmark/compare/2.0.0-rc1...2.0.0-rc2
-[2.0.0-rc1]: https://github.com/thephpleague/commonmark/compare/2.0.0-beta3...2.0.0-rc1
-[2.0.0-beta3]: https://github.com/thephpleague/commonmark/compare/2.0.0-beta2...2.0.0-beta3
-[2.0.0-beta2]: https://github.com/thephpleague/commonmark/compare/2.0.0-beta1...2.0.0-beta2
-[2.0.0-beta1]: https://github.com/thephpleague/commonmark/compare/1.6...2.0.0-beta1
+- Allow quick definitions to use 'at least once' expectation
+  `\Mockery::getConfiguration()->getQuickDefinitions()->shouldBeCalledAtLeastOnce(true)` (#1056)
+- Added provisional support for PHP 8.0 (#1068, #1072,#1079)
+- Fix mocking methods with iterable return type without specifying a return value (#1075)
+
+## 1.3.3 (2020-08-11)
+
+- Fix array to string conversion in ConstantsPass (#1086)
+- Fixed nullable PHP 8.0 union types (#1088)
+- Fixed support for PHP 8.0 parent type (#1088)
+- Fixed PHP 8.0 mixed type support (#1088)
+- Fixed PHP 8.0 union return types (#1088)
+
+## 1.3.2 (2020-07-09)
+
+- Fix mocking with anonymous classes (#1039)
+- Fix andAnyOthers() to properly match earlier expectations (#1051)
+- Added provisional support for PHP 8.0 (#1068, #1072,#1079)
+- Fix mocking methods with iterable return type without specifying a return value (#1075)
+
+## 1.4.0 (2020-05-19)
+
+- Fix mocking with anonymous classes (#1039)
+- Fix andAnyOthers() to properly match earlier expectations (#1051)
+- Drops support for PHP < 7.3 and PHPUnit < 8 (#1059)
+
+## 1.3.1 (2019-12-26)
+
+- Revert improved exception debugging due to BC breaks (#1032)
+
+## 1.3.0 (2019-11-24)
+
+- Added capture `Mockery::capture` convenience matcher (#1020)
+- Added `andReturnArg` to echo back an argument passed to a an expectation (#992)
+- Improved exception debugging (#1000)
+- Fixed `andSet` to not reuse properties between mock objects (#1012)
+
+## 1.2.4 (2019-09-30)
+
+- Fix a bug introduced with previous release, for empty method definition lists (#1009)
+
+## 1.2.3 (2019-08-07)
+
+- Allow mocking classes that have allows and expects methods (#868)
+- Allow passing thru __call method in all mock types (experimental) (#969)
+- Add support for `!` to blacklist methods (#959)
+- Added `withSomeOfArgs` to partial match a list of args (#967)
+- Fix chained demeter calls with type hint (#956)
+
+## 1.2.2 (2019-02-13)
+
+- Fix a BC breaking change for PHP 5.6/PHPUnit 5.7.27 (#947)
+
+## 1.2.1 (2019-02-07)
+
+- Support for PHPUnit 8 (#942)
+- Allow mocking static methods called on instance (#938)
+
+## 1.2.0 (2018-10-02)
+
+- Starts counting default expectations towards count (#910)
+- Adds workaround for some HHVM return types (#909)
+- Adds PhpStorm metadata support for autocomplete etc (#904)
+- Further attempts to support multiple PHPUnit versions (#903)
+- Allows setting constructor expectations on instance mocks (#900)
+- Adds workaround for HHVM memoization decorator (#893)
+- Adds experimental support for callable spys (#712)
+
+## 1.1.0 (2018-05-08)
+
+- Allows use of string method names in allows and expects (#794)
+- Finalises allows and expects syntax in API (#799)
+- Search for handlers in a case instensitive way (#801)
+- Deprecate allowMockingMethodsUnnecessarily (#808)
+- Fix risky tests (#769)
+- Fix namespace in TestListener (#812)
+- Fixed conflicting mock names (#813)
+- Clean elses (#819)
+- Updated protected method mocking exception message (#826)
+- Map of constants to mock (#829)
+- Simplify foreach with `in_array` function (#830)
+- Typehinted return value on Expectation#verify. (#832)
+- Fix shouldNotHaveReceived with HigherOrderMessage (#842)
+- Deprecates shouldDeferMissing (#839)
+- Adds support for return type hints in Demeter chains (#848)
+- Adds shouldNotReceive to composite expectation (#847)
+- Fix internal error when using --static-backup (#845)
+- Adds `andAnyOtherArgs` as an optional argument matcher (#860)
+- Fixes namespace qualifying with namespaced named mocks (#872)
+- Added possibility to add Constructor-Expections on hard dependencies, read: Mockery::mock('overload:...') (#781)
+
+## 1.0.0 (2017-09-06)
+
+- Destructors (`__destruct`) are stubbed out where it makes sense
+- Allow passing a closure argument to `withArgs()` to validate multiple arguments at once.
+- `Mockery\Adapter\Phpunit\TestListener` has been rewritten because it
+  incorrectly marked some tests as risky. It will no longer verify mock
+  expectations but instead check that tests do that themselves. PHPUnit 6 is
+  required if you want to use this fail safe.
+- Removes SPL Class Loader
+- Removed object recorder feature
+- Bumped minimum PHP version to 5.6
+- `andThrow` will now throw anything `\Throwable`
+- Adds `allows` and `expects` syntax
+- Adds optional global helpers for `mock`, `namedMock` and `spy`
+- Adds ability to create objects using traits
+- `Mockery\Matcher\MustBe` was deprecated
+- Marked `Mockery\MockInterface` as internal
+- Subset matcher matches recursively
+- BC BREAK - Spies return `null` by default from ignored (non-mocked) methods with nullable return type
+- Removed extracting getter methods of object instances
+- BC BREAK - Remove implicit regex matching when trying to match string arguments, introduce `\Mockery::pattern()` when regex matching is needed
+- Fix Mockery not getting closed in cases of failing test cases
+- Fix Mockery not setting properties on overloaded instance mocks
+- BC BREAK - Fix Mockery not trying default expectations if there is any concrete expectation
+- BC BREAK - Mockery's PHPUnit integration will mark a test as risky if it
+  thinks one it's exceptions has been swallowed in PHPUnit > 5.7.6. Use `$e->dismiss()` to dismiss.
+
+## 0.9.4 (XXXX-XX-XX)
+
+- `shouldIgnoreMissing` will respect global `allowMockingNonExistentMethods`
+  config
+- Some support for variadic parameters
+- Hamcrest is now a required dependency
+- Instance mocks now respect `shouldIgnoreMissing` call on control instance
+- This will be the *last version to support PHP 5.3*
+- Added `Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration` trait
+- Added `makePartial` to `Mockery\MockInterface` as it was missing
+
+## 0.9.3 (2014-12-22)
+
+- Added a basic spy implementation
+- Added `Mockery\Adapter\Phpunit\MockeryTestCase` for more reliable PHPUnit
+  integration
+
+## 0.9.2 (2014-09-03)
+
+- Some workarounds for the serialisation problems created by changes to PHP in 5.5.13, 5.4.29,
+  5.6.
+- Demeter chains attempt to reuse doubles as they see fit, so for foo->bar and
+  foo->baz, we'll attempt to use the same foo
+
+## 0.9.1 (2014-05-02)
+
+- Allow specifying consecutive exceptions to be thrown with `andThrowExceptions`
+- Allow specifying methods which can be mocked when using
+  `Mockery\Configuration::allowMockingNonExistentMethods(false)` with
+  `Mockery\MockInterface::shouldAllowMockingMethod($methodName)`
+- Added andReturnSelf method: `$mock->shouldReceive("foo")->andReturnSelf()`
+- `shouldIgnoreMissing` now takes an optional value that will be return instead
+  of null, e.g. `$mock->shouldIgnoreMissing($mock)`
+
+## 0.9.0 (2014-02-05)
+
+- Allow mocking classes with final __wakeup() method
+- Quick definitions are now always `byDefault`
+- Allow mocking of protected methods with `shouldAllowMockingProtectedMethods`
+- Support official Hamcrest package
+- Generator completely rewritten
+- Easily create named mocks with namedMock
